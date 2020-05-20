@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"io/ioutil"
 	"net/http"
 
@@ -32,12 +31,12 @@ func BlockFile(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"code": 500, "msg": "invalid block data"})
 		return
 	}
-	res, err := json.Marshal(desc)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"code": 500, "msg": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"code": 200, "msg": "ok", "data": string(res)})
+	// res, err := json.Marshal(desc)
+	// if err != nil {
+	// 	c.JSON(http.StatusOK, gin.H{"code": 500, "msg": err.Error()})
+	// 	return
+	// }
+	c.JSON(http.StatusOK, gin.H{"code": 200, "msg": "ok", "data": desc})
 	return
 }
 
