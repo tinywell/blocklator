@@ -1,7 +1,11 @@
 package block
 
 import (
+	"time"
+
+	"github.com/hyperledger/fabric-protos-go/common"
 	"github.com/hyperledger/fabric-protos-go/orderer/etcdraft"
+	"github.com/hyperledger/fabric-protos-go/peer"
 )
 
 // block type
@@ -42,11 +46,11 @@ type ConfigValues struct {
 
 // Desc block description
 type Desc struct {
-	BlockNum     uint64      `json:"block_num,omitempty" db:"block_num"`
-	Hash         string      `json:"hash,omitempty" db:"hash"`
-	PreHash      string      `json:"pre_hash,omitempty" db:"pre_hash"`
-	Channel      string      `json:"channel,omitempty" db:"channel"`
-	Type         int         `json:"type,omitempty" db:"type"` // 0: transaction 1: config
+	BlockNum     uint64      `json:"block_num" db:"block_num"`
+	Hash         string      `json:"hash" db:"hash"`
+	PreHash      string      `json:"pre_hash" db:"pre_hash"`
+	Channel      string      `json:"channel" db:"channel"`
+	Type         int         `json:"type" db:"type"` // 0: transaction 1: config
 	Config       *ConfigDesc `json:"config,omitempty" db:"config"`
 	Transactions []*TranDesc `json:"transactions,omitempty" db:"transactions"`
 }
@@ -62,4 +66,38 @@ type ConfigDesc struct {
 
 // TranDesc transaction description
 type TranDesc struct {
+	Channel   string    `json:"channel,omitempty" db:"channel"`
+	TxID      string    `json:"tx_id,omitempty" db:"tx_id"`
+	Time      time.Time `json:"time,omitempty" db:"time"`
+	Chaincode string    `json:"chaincode,omitempty" db:"chaincode"`
+	Func      string    `json:"func,omitempty" db:"func"`
+	Args      []string  `json:"args,omitempty" db:"args"`
+	Resp      struct {
+		Status  int32  `json:"status" db:"status"`
+		Message string `json:"message" db:"message"`
+	} `json:"resp,omitempty" db:"resp"`
+}
+
+// Envelope clean struct for envelope
+type Envelope struct {
+	Payload struct {
+		Header struct {
+			ChannelHeader   *common.ChannelHeader
+			SignatureHeader *common.SignatureHeader
+		}
+		Transaction struct {
+			Header          *common.SignatureHeader
+			ChaincodeAction struct {
+				Proposal struct {
+					Input *peer.ChaincodeSpec
+				}
+				Response struct {
+					ProposalHash    []byte
+					ChaincodeAction *peer.ChaincodeAction
+				}
+				Endorses []*peer.Endorsement
+			}
+		}
+	}
+	Signature []byte
 }

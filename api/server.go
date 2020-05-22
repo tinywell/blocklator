@@ -58,6 +58,16 @@ func forblock(data []byte) *block.Desc {
 	config := blocklator.GetConfig()
 	if config == nil {
 		blockdesc.Type = block.BlockTypeTrans
+		trans := blocklator.GetTransactions()
+
+		for _, t := range trans {
+			translator, err := block.NewTranslator(t)
+			if err != nil {
+				continue
+			}
+			desc := fortransactions(translator)
+			blockdesc.Transactions = append(blockdesc.Transactions, desc)
+		}
 	} else {
 		cfg := block.NewConfiglator(config)
 		cfgdesc := forconfig(cfg)
@@ -72,5 +82,5 @@ func forconfig(configlator *block.Configlator) *block.ConfigDesc {
 }
 
 func fortransactions(translator *block.Translator) *block.TranDesc {
-	return nil
+	return translator.ToDesc()
 }
