@@ -31,8 +31,35 @@ func (c *Configlator) ToDesc() *ConfigDesc {
 	desc.ConsortiumOrgs = c.GetConsortiumOrgs()
 	desc.OrdererOrgs = c.GetOrdererOrgs()
 	desc.Consensus = c.GetConsensusInfo()
-	// desc.Values=
+	desc.Values = c.GetValues()
 	return desc
+}
+
+// GetValues 解析配置块中的基本参数信息
+func (c *Configlator) GetValues() *ConfigValues {
+	values := &ConfigValues{}
+	pha := &common.HashingAlgorithm{}
+	err := proto.Unmarshal(c.config.ChannelGroup.Values[HashingAlgorithmKey].Value, pha)
+	if err != nil {
+		return nil
+	}
+	values.HashingAlgorithm = pha.Name
+
+	if ct, ok := c.config.ChannelGroup.Values[ConsortiumKey]; ok {
+		pct := &common.Consortium{}
+		err = proto.Unmarshal(ct.Value, pct)
+		if err != nil {
+			return nil
+		}
+		values.Consortium = pct.Name
+	}
+	pod := &common.OrdererAddresses{}
+	err = proto.Unmarshal(c.config.ChannelGroup.Values[OrdererAddressesKey].Value, pod)
+	if err != nil {
+		return nil
+	}
+	values.OrdererAddresses = pod.Addresses
+	return values
 }
 
 // GetConsensusInfo 解析配置块中的共识相关配置信息
@@ -171,9 +198,15 @@ func (c *Configlator) getOrg(mspvalue []byte) (*GroupOrg, error) {
 		}
 		org.Type = mspc.Type
 		org.Name = mspcfg.Name
-		org.Admins = mspcfg.Admins
-		org.RootCerts = mspcfg.RootCerts
-		org.TLSRootCerts = mspcfg.TlsRootCerts
+		if len(mspcfg.Admins) > 0 {
+			org.Admin = string(mspcfg.Admins[0])
+		}
+		if len(mspcfg.RootCerts) > 0 {
+			org.RootCert = string(mspcfg.RootCerts[0])
+		}
+		if len(mspcfg.TlsRootCerts) > 0 {
+			org.TLSRootCert = string(mspcfg.TlsRootCerts[0])
+		}
 		org.RevocationList = mspcfg.RevocationList
 	case IDEMIX:
 		mspcfg := &msp.IdemixMSPConfig{}

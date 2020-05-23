@@ -1,7 +1,8 @@
 package block
 
 import (
-	"encoding/base64"
+	"encoding/hex"
+	"strings"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/fabric-protos-go/common"
@@ -34,13 +35,13 @@ func (bl *Blocklator) GetBlockNum() uint64 {
 // GetBlockHash return block hash
 func (bl *Blocklator) GetBlockHash() string {
 	hash := bl.block.Header.DataHash
-	return base64.StdEncoding.EncodeToString(hash)
+	return strings.ToUpper(hex.EncodeToString(hash))
 }
 
 // GetBlockPrehash return block previoous hash
 func (bl *Blocklator) GetBlockPrehash() string {
 	hash := bl.block.Header.PreviousHash
-	return base64.StdEncoding.EncodeToString(hash)
+	return strings.ToUpper(hex.EncodeToString(hash))
 }
 
 // GetChannel return channel id

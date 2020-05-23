@@ -18,9 +18,9 @@ const (
 type GroupOrg struct {
 	Type           int32    `json:"type,omitempty" db:"type"`
 	Name           string   `json:"name,omitempty" db:"name"`
-	RootCerts      [][]byte `json:"root_certs,omitempty" db:"root_certs"`
-	TLSRootCerts   [][]byte `json:"tls_root_certs,omitempty" db:"tls_root_certs"`
-	Admins         [][]byte `json:"admins,omitempty" db:"admins"`
+	RootCert       string   `json:"root_cert,omitempty" db:"root_cert"`
+	TLSRootCert    string   `json:"tls_root_cert,omitempty" db:"tls_root_cert"`
+	Admin          string   `json:"admin,omitempty" db:"admin"`
 	RevocationList [][]byte `json:"revocation_list,omitempty" db:"revocation_list"`
 	Endpoints      []string `json:"endpoints,omitempty" db:"endpoints"` // peer: anchorpeers  orderer: ordereraddress
 }
@@ -60,8 +60,8 @@ type ConfigDesc struct {
 	OrdererOrgs     []*GroupOrg            `json:"orderer_orgs,omitempty" db:"orderer_orgs"`
 	ConsortiumOrgs  map[string][]*GroupOrg `json:"consortium_orgs,omitempty" db:"consortium_orgs"`
 	ApplicationOrgs []*GroupOrg            `json:"application_orgs,omitempty" db:"application_orgs"`
-	Values          *ConfigValues          `json:"values,omitempty" db:"values"`
-	Consensus       *ConsensusInfo         `json:"consensus,omitempty" db:"consensus"`
+	Values          *ConfigValues          `json:"values" db:"values"`
+	Consensus       *ConsensusInfo         `json:"consensus" db:"consensus"`
 }
 
 // TranDesc transaction description
