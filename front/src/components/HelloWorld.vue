@@ -1,0 +1,30 @@
+<template>
+  <div>
+    <orgcard :org="org"></orgcard>
+  </div>
+</template>
+
+<script>
+import orgcard from "./GroupOrg.vue"
+
+export default {
+  components: { orgcard },
+  data(){
+    return {
+      org :{
+        "name":"Org1MSP",
+        "root_cert":"-----BEGIN CERTIFICATE-----\nMIICPDCCAeOgAwIBAgIQEcSyq47Hgd3hl9d+SsKoRzAKBggqhkjOPQQDAjBpMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEUMBIGA1UEChMLZXhhbXBsZS5jb20xFzAVBgNVBAMTDmNhLmV4YW1w\nbGUuY29tMB4XDTIwMDUyMjA0MTEwMFoXDTMwMDUyMDA0MTEwMFowaTELMAkGA1UE\nBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lz\nY28xFDASBgNVBAoTC2V4YW1wbGUuY29tMRcwFQYDVQQDEw5jYS5leGFtcGxlLmNv\nbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABHp9OUm8p1DlmY5n3znSbzX1yqNS\nbshEK3qTR2nvtDOaaAAZSk1eGQ6vYJwtG6ShHcRKsNFKtzZsYlja/ba2/JSjbTBr\nMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEw\nDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgpv8G4l+/MxhDuklOZIVJq4b1N9o6\nIR9vLXefVQmZgjkwCgYIKoZIzj0EAwIDRwAwRAIgQV0MIXRXLeqDtYEw2MvaT8H/\nieBMA8kGmzNeydSu3EACIHVCW4fJw0K8atUqojr+QGxVkSDk3J0AVs6HO2j3OpbX\n-----END CERTIFICATE-----\n",
+        "tls_root_cert":"-----BEGIN CERTIFICATE-----\nMIICQzCCAemgAwIBAgIQEoqiQ0xDm9Kxu2H63OQ28DAKBggqhkjOPQQDAjBsMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEUMBIGA1UEChMLZXhhbXBsZS5jb20xGjAYBgNVBAMTEXRsc2NhLmV4\nYW1wbGUuY29tMB4XDTIwMDUyMjA0MTEwMFoXDTMwMDUyMDA0MTEwMFowbDELMAkG\nA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFu\nY2lzY28xFDASBgNVBAoTC2V4YW1wbGUuY29tMRowGAYDVQQDExF0bHNjYS5leGFt\ncGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJIitzbf2rL1Wi23aCzC\nEKlnmmMuDz1prRVJ/mtrSCbODzNsU3opQM44a9JAqFDw0CpjRHgkSnGNRHM8Ydf8\nwXejbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYB\nBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgC/FAljXw7gimm5UtLfoD\niTRA77O7oB97qaXHu52F47EwCgYIKoZIzj0EAwIDSAAwRQIhALsnlIFdtdCSIAlI\nC9Wf2weK4QL612qZ6+dDmXUKWHmLAiAb7bK08mstwJ7qD2bxvPWlY9y3qEodwctt\nLA+5gr7LlA==\n-----END CERTIFICATE-----\n",
+        "endpoints":["peer0.org1.example.com:7050","peer1.org1.example.com:7050"],
+      },
+    }
+  },
+  name: 'HelloWorld',
+
+};
+
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="less">
+</style>
