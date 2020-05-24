@@ -36,6 +36,13 @@ export default {
               block: response.data
             }
           });
+        } else if (response.data.type == 0) {
+          this.$router.push({
+            name: "Transaction",
+            params: {
+              block: response.data
+            }
+          });
         }
       }
     },

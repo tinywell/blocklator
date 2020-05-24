@@ -57,9 +57,9 @@ type Desc struct {
 
 // ConfigDesc config description
 type ConfigDesc struct {
-	OrdererOrgs     []*GroupOrg            `json:"orderer_orgs,omitempty" db:"orderer_orgs"`
-	ConsortiumOrgs  map[string][]*GroupOrg `json:"consortium_orgs,omitempty" db:"consortium_orgs"`
-	ApplicationOrgs []*GroupOrg            `json:"application_orgs,omitempty" db:"application_orgs"`
+	OrdererOrgs     []*GroupOrg            `json:"orderer_orgs" db:"orderer_orgs"`
+	ConsortiumOrgs  map[string][]*GroupOrg `json:"consortium_orgs" db:"consortium_orgs"`
+	ApplicationOrgs []*GroupOrg            `json:"application_orgs" db:"application_orgs"`
 	Values          *ConfigValues          `json:"values" db:"values"`
 	Consensus       *ConsensusInfo         `json:"consensus" db:"consensus"`
 }

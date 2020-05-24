@@ -24,6 +24,11 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "Config" */ '../views/Config.vue')
   },
   {
+    path: '/transaction',
+    name: 'Transaction',
+    component: () => import(/* webpackChunkName: "Transaction" */ '../views/Transaction.vue')
+  },
+  {
     path: '/block',
     name: 'Block',
     component: () => import(/* webpackChunkName: "Block" */ '../views/Block.vue')

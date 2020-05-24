@@ -2,8 +2,8 @@
   <div style="display: flex;justify-content: center;">
     <!-- <el-main> -->
     <div style="width:900px">
-      <el-card class="box-card">
-        <!-- <div class="base_info"> -->
+      <blockhead :block="block"></blockhead>
+      <!-- <el-card class="box-card">        
         <el-row class="row">
           <el-col :span="4" class="label">区块号：</el-col>
           <el-col :span="20" class="text">{{ block.block_num }}</el-col>
@@ -27,9 +27,8 @@
           <el-col :span="20" class="text">
             {{ this.$consts.BlockTypeOptsMap[block.type] }}
           </el-col>
-        </el-row>
-        <!-- </div> -->
-      </el-card>
+        </el-row>        
+      </el-card> -->
       <el-card class="box-card" v-show="this.consortium">
         <div slot="header" class="clearfix">
           <span>联盟组织</span>
@@ -170,9 +169,9 @@
 
 <script>
 import grouporg from "../components/GroupOrg.vue";
-
+import blockhead from "../components/BlockHead.vue";
 export default {
-  components: { grouporg },
+  components: { grouporg, blockhead },
   data() {
     return {
       block: {
