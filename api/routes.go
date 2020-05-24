@@ -13,6 +13,7 @@ func CollectRouter(mode string) *gin.Engine {
 	r := gin.Default()
 	r.Use(cors.Default())
 
+	r.Static("/", "./front/dist")
 	r.POST("/api/block/file", BlockFile)
 
 	return r

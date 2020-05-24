@@ -1,4 +1,5 @@
-const ServerAddrPre = 'http://localhost:8080/api';
+// const ServerAddrPre = 'http://localhost:8080/api';
+const ServerAddrPre = '/api';
 
 const BlockTypeOpts = [
     { text: '配置区块', value: 1 },
