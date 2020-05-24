@@ -5,11 +5,12 @@ const BlockTypeOpts = [
     { text: '交易区块', value: 0 },
   ];
   
-  const BlockTypeOptsMap = {};
-  BlockTypeOpts.forEach((item) => { BlockTypeOptsMap[item.value] = item.text; });
+const BlockTypeOptsMap = {};
+BlockTypeOpts.forEach((item) => { BlockTypeOptsMap[item.value] = item.text; });
   
 
 export default {
     BlockTypeOpts,
-    BlockTypeOptsMap
+    BlockTypeOptsMap,
+    ServerAddrPre
 }

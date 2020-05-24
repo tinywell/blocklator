@@ -23,6 +23,16 @@ Vue.use(VueRouter)
     name: 'Config',
     component: () => import(/* webpackChunkName: "Config" */ '../views/Config.vue')
   },
+  {
+    path: '/block',
+    name: 'Block',
+    component: () => import(/* webpackChunkName: "Block" */ '../views/Block.vue')
+  },
+  {
+    path: '/ledger',
+    name: 'Ledger',
+    component: () => import(/* webpackChunkName: "Ledger" */ '../views/Ledger.vue')
+  },
 ]
 
 const router = new VueRouter({

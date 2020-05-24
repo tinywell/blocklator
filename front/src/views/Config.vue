@@ -51,14 +51,12 @@
       </div>
       <ul class="org_list">
         <li class="org" v-for="org in block.config.application_orgs" :key="org">
-          <el-popover
-            trigger="click"
-            placement="bottom"
-            width="700"
-            show="show"
-          >
+          <el-popover trigger="hover" placement="right" width="700" show="show">
             <grouporg :org="org"></grouporg>
-            <el-tag type="success" slot="reference">{{ org.name }}</el-tag>
+            <!-- <el-tag type="success" slot="reference">{{ org.name }}</el-tag> -->
+            <el-card shadow="hover" slot="reference">
+              {{ org.name }}
+            </el-card>
           </el-popover>
         </li>
       </ul>
@@ -69,14 +67,11 @@
       </div>
       <ul class="org_list">
         <li class="org" v-for="org in block.config.orderer_orgs" :key="org">
-          <el-popover
-            trigger="click"
-            placement="bottom"
-            width="700"
-            show="show"
-          >
+          <el-popover trigger="hover" placement="right" width="700" show="show">
             <grouporg :org="org"></grouporg>
-            <el-tag type="success" slot="reference">{{ org.name }}</el-tag>
+            <el-card shadow="hover" slot="reference">
+              {{ org.name }}
+            </el-card>
           </el-popover>
         </li>
       </ul>
@@ -137,7 +132,7 @@
                 v-for="addr in block.config.values.orderer_addresses"
                 :key="addr"
                 size="small"
-                style="margin-top:3px;width:200px;text-align:center;"
+                style="margin:2px 2px;width:200px;text-align:center;"
               >
                 {{ addr }}
               </el-tag>
@@ -271,6 +266,17 @@ export default {
       },
       consortium: false
     };
+  },
+  methods: {
+    init() {
+      if (this.$route.params.block != null) {
+        this.block = this.$route.params.block;
+      }
+      console.log(this.block);
+    }
+  },
+  mounted() {
+    this.init();
   }
 };
 
@@ -309,6 +315,7 @@ function show(e) {
   white-space: nowrap;
   list-style: none;
   overflow-x: scroll;
+  text-align: left;
 }
 
 .org {

@@ -5,6 +5,7 @@
       <router-link to="/ledger">账本解析</router-link>
     </div>
     <router-view />
+    <div class="footer">Copyright © tinywell 2020</div>
   </div>
 </template>
 
@@ -28,5 +29,9 @@
       color: #42b983;
     }
   }
+}
+
+.footer {
+  margin: 5px;
 }
 </style>
