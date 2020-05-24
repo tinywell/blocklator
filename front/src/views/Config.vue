@@ -1,149 +1,170 @@
 <template>
-  <div>
-    <el-card class="box-card">
-      <!-- <div class="base_info"> -->
-      <el-row class="row">
-        <el-col :span="4" class="label">区块号：</el-col>
-        <el-col :span="20" class="text">{{ block.block_num }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4" class="label">通道：</el-col>
-        <el-col :span="20" class="text">{{ block.channel }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4" class="label">区块哈希：</el-col>
-        <el-col :span="20" class="text code_text">{{ block.hash }}</el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4" class="label">前区块哈希：</el-col>
-        <el-col :span="20" class="text code_text">{{ block.pre_hash }}</el-col>
-      </el-row>
-      <el-row class="row">
-        <el-col :span="4" class="label">区块类型：</el-col>
-        <el-col :span="20" class="text">
-          {{ this.$consts.BlockTypeOptsMap[block.type] }}
+  <div style="display: flex;justify-content: center;">
+    <!-- <el-main> -->
+    <div style="width:900px">
+      <el-card class="box-card">
+        <!-- <div class="base_info"> -->
+        <el-row class="row">
+          <el-col :span="4" class="label">区块号：</el-col>
+          <el-col :span="20" class="text">{{ block.block_num }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4" class="label">通道：</el-col>
+          <el-col :span="20" class="text">{{ block.channel }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4" class="label">区块哈希：</el-col>
+          <el-col :span="20" class="text code_text">{{ block.hash }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4" class="label">前区块哈希：</el-col>
+          <el-col :span="20" class="text code_text">{{
+            block.pre_hash
+          }}</el-col>
+        </el-row>
+        <el-row class="row">
+          <el-col :span="4" class="label">区块类型：</el-col>
+          <el-col :span="20" class="text">
+            {{ this.$consts.BlockTypeOptsMap[block.type] }}
+          </el-col>
+        </el-row>
+        <!-- </div> -->
+      </el-card>
+      <el-card class="box-card" v-show="this.consortium">
+        <div slot="header" class="clearfix">
+          <span>联盟组织</span>
+        </div>
+        <el-collapse>
+          <el-collapse-item
+            v-for="(name, cs) in block.config.consortium_orgs"
+            :key="(name, cs)"
+          >
+            <template slot="title">
+              <div class="row">
+                <div>联盟:</div>
+                <div>{{ name }}</div>
+              </div>
+            </template>
+            <grouporg :org="org"></grouporg>
+          </el-collapse-item>
+        </el-collapse>
+      </el-card>
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>应用组织</span>
+        </div>
+        <ul class="org_list">
+          <li
+            class="org"
+            v-for="org in block.config.application_orgs"
+            :key="org"
+          >
+            <el-popover
+              trigger="hover"
+              placement="right"
+              width="700"
+              show="show"
+            >
+              <grouporg :org="org"></grouporg>
+              <!-- <el-tag type="success" slot="reference">{{ org.name }}</el-tag> -->
+              <el-card shadow="hover" slot="reference">
+                {{ org.name }}
+              </el-card>
+            </el-popover>
+          </li>
+        </ul>
+      </el-card>
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>共识组织</span>
+        </div>
+        <ul class="org_list">
+          <li class="org" v-for="org in block.config.orderer_orgs" :key="org">
+            <el-popover
+              trigger="hover"
+              placement="right"
+              width="700"
+              show="show"
+            >
+              <grouporg :org="org"></grouporg>
+              <el-card shadow="hover" slot="reference">
+                {{ org.name }}
+              </el-card>
+            </el-popover>
+          </li>
+        </ul>
+      </el-card>
+      <el-row class="box-card">
+        <el-col :span="12">
+          <el-card class="param-card1" style=";margin-right:5px;height:300px">
+            <div slot="header" class="clearfix">
+              <span>共识参数</span>
+            </div>
+            <el-row class="row">
+              <el-col :span="12" class="label">共识类型：</el-col>
+              <el-col :span="12" class="text">{{
+                block.config.consensus.type
+              }}</el-col>
+            </el-row>
+            <el-row class="row">
+              <el-col :span="12" class="label">区块最大交易数：</el-col>
+              <el-col :span="12" class="text">{{
+                block.config.consensus.max_message_count
+              }}</el-col>
+            </el-row>
+            <el-row class="row">
+              <el-col :span="12" class="label"
+                >区块最大绝对值 absolute：</el-col
+              >
+              <el-col :span="12" class="text"
+                >{{ block.config.consensus.absolute_max_bytes }} (Byte)</el-col
+              >
+            </el-row>
+            <el-row class="row">
+              <el-col :span="12" class="label"
+                >区块最大偏好值 preferred：</el-col
+              >
+              <el-col :span="12" class="text"
+                >{{ block.config.consensus.preferred_max_bytes }} (Byte)</el-col
+              >
+            </el-row>
+            <el-row class="row">
+              <el-col :span="12" class="label">出块超时时间：</el-col>
+              <el-col :span="12" class="text"
+                >{{ block.config.consensus.batch_time_out }}
+              </el-col>
+            </el-row>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card style="margin-left:5px;height:300px">
+            <div slot="header" class="clearfix">
+              <span>网络参数</span>
+            </div>
+            <el-row class="row">
+              <el-col :span="12" class="label">hash 算法：</el-col>
+              <el-col :span="12" class="text"
+                >{{ block.config.values.hashing_algorithm }}
+              </el-col>
+            </el-row>
+            <el-row class="row">
+              <el-col :span="12" class="label">共识服务节点地址：</el-col>
+              <el-col :span="12" class="text">
+                <el-tag
+                  v-for="addr in block.config.values.orderer_addresses"
+                  :key="addr"
+                  size="small"
+                  style="margin:2px 2px;width:200px;text-align:center;"
+                >
+                  {{ addr }}
+                </el-tag>
+              </el-col>
+            </el-row>
+          </el-card>
         </el-col>
       </el-row>
-      <!-- </div> -->
-    </el-card>
-    <el-card class="box-card" v-show="this.consortium">
-      <div slot="header" class="clearfix">
-        <span>联盟组织</span>
-      </div>
-      <el-collapse>
-        <el-collapse-item
-          v-for="(name, cs) in block.config.consortium_orgs"
-          :key="(name, cs)"
-        >
-          <template slot="title">
-            <div class="row">
-              <div>联盟:</div>
-              <div>{{ name }}</div>
-            </div>
-          </template>
-          <grouporg :org="org"></grouporg>
-        </el-collapse-item>
-      </el-collapse>
-    </el-card>
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span>应用组织</span>
-      </div>
-      <ul class="org_list">
-        <li class="org" v-for="org in block.config.application_orgs" :key="org">
-          <el-popover trigger="hover" placement="right" width="700" show="show">
-            <grouporg :org="org"></grouporg>
-            <!-- <el-tag type="success" slot="reference">{{ org.name }}</el-tag> -->
-            <el-card shadow="hover" slot="reference">
-              {{ org.name }}
-            </el-card>
-          </el-popover>
-        </li>
-      </ul>
-    </el-card>
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span>共识组织</span>
-      </div>
-      <ul class="org_list">
-        <li class="org" v-for="org in block.config.orderer_orgs" :key="org">
-          <el-popover trigger="hover" placement="right" width="700" show="show">
-            <grouporg :org="org"></grouporg>
-            <el-card shadow="hover" slot="reference">
-              {{ org.name }}
-            </el-card>
-          </el-popover>
-        </li>
-      </ul>
-    </el-card>
-    <el-row class="box-card">
-      <el-col :span="12">
-        <el-card class="param-card1" style=";margin-right:5px;height:300px">
-          <div slot="header" class="clearfix">
-            <span>共识参数</span>
-          </div>
-          <el-row class="row">
-            <el-col :span="12" class="label">共识类型：</el-col>
-            <el-col :span="12" class="text">{{
-              block.config.consensus.type
-            }}</el-col>
-          </el-row>
-          <el-row class="row">
-            <el-col :span="12" class="label">区块最大交易数：</el-col>
-            <el-col :span="12" class="text">{{
-              block.config.consensus.max_message_count
-            }}</el-col>
-          </el-row>
-          <el-row class="row">
-            <el-col :span="12" class="label">区块最大绝对值 absolute：</el-col>
-            <el-col :span="12" class="text"
-              >{{ block.config.consensus.absolute_max_bytes }} (Byte)</el-col
-            >
-          </el-row>
-          <el-row class="row">
-            <el-col :span="12" class="label">区块最大偏好值 preferred：</el-col>
-            <el-col :span="12" class="text"
-              >{{ block.config.consensus.preferred_max_bytes }} (Byte)</el-col
-            >
-          </el-row>
-          <el-row class="row">
-            <el-col :span="12" class="label">出块超时时间：</el-col>
-            <el-col :span="12" class="text"
-              >{{ block.config.consensus.batch_time_out }}
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card style="margin-left:5px;height:300px">
-          <div slot="header" class="clearfix">
-            <span>网络参数</span>
-          </div>
-          <el-row class="row">
-            <el-col :span="12" class="label">hash 算法：</el-col>
-            <el-col :span="12" class="text"
-              >{{ block.config.values.hashing_algorithm }}
-            </el-col>
-          </el-row>
-          <el-row class="row">
-            <el-col :span="12" class="label">共识服务节点地址：</el-col>
-            <el-col :span="12" class="text">
-              <el-tag
-                v-for="addr in block.config.values.orderer_addresses"
-                :key="addr"
-                size="small"
-                style="margin:2px 2px;width:200px;text-align:center;"
-              >
-                {{ addr }}
-              </el-tag>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <div></div>
-    <div></div>
+    </div>
+    <!-- </el-main> -->
   </div>
 </template>
 
