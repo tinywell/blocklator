@@ -11,6 +11,7 @@ import (
 var (
 	port       int
 	production bool
+	static     string
 
 	// ServerCmd server subcommand
 	ServerCmd = &cobra.Command{
@@ -25,6 +26,7 @@ var (
 func init() {
 	ServerCmd.PersistentFlags().IntVarP(&port, "port", "p", 8080, "listen port")
 	ServerCmd.PersistentFlags().BoolVarP(&production, "production", "m", false, "is in production mode")
+	ServerCmd.PersistentFlags().StringVarP(&static, "static", "s", "./front/dist", "front page path")
 }
 
 // Execute execute server command
@@ -34,7 +36,7 @@ func Execute() {
 		mode = gin.ReleaseMode
 	}
 
-	r := api.CollectRouter(mode)
+	r := api.CollectRouter(mode, static)
 
 	if err := r.Run(fmt.Sprintf("0.0.0.0:%d", port)); err != nil {
 		panic(err)

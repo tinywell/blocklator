@@ -1,0 +1,15 @@
+version: "2"
+
+services:
+  blocklator:
+    container_name: cli
+    image: tinywell/blocklator:latest
+    tty: true
+    stdin_open: true
+    # environment:
+    #
+    ports:
+      - 8080:80
+    working_dir: /app
+    # command:
+    # volumes:

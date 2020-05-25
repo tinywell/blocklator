@@ -6,6 +6,10 @@ front:
 backend:
 	go build -v -o blocklator cmd/blocklator.go
 
+.PHONY: docker
+docker:
+	docker build -f ./docker/Dockerfile -t tinywell/blocklator .	
+
 .PHONY: start
 start: front backend
 	./blocklator server

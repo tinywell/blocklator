@@ -6,14 +6,14 @@ import (
 )
 
 // CollectRouter return gin router
-func CollectRouter(mode string) *gin.Engine {
+func CollectRouter(mode, static string) *gin.Engine {
 	if len(mode) > 0 {
 		gin.SetMode(mode)
 	}
 	r := gin.Default()
 	r.Use(cors.Default())
 
-	r.Static("/", "./front/dist")
+	r.Static("/", static)
 	r.POST("/api/block/file", BlockFile)
 
 	return r
