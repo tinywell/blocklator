@@ -2,17 +2,22 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file ./docker/Dockerfile --tag tinywell/blocklator:$(date +%s)
+      - uses: actions/checkout@v2
+      - name: Build and Push the Docker image
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: tinywell/blocklator
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          dockerfile: ./docker/Dockerfile
+          tag_names: true
+          cache: true
