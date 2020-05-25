@@ -1,6 +1,27 @@
 <template>
   <el-card style="margin-top:5px;">
     <el-row style="border-bottom:dotted;border-width:1px;" class="border">
+      <div style="margin-bottom:5px">
+        <el-row>
+          <el-col :span="4" class="label">提案请求MSPID：</el-col>
+          <el-col :span="20" class="text">{{
+            transaction.signer.mspid
+          }}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4" class="label">提案请求者证书：</el-col>
+          <el-col :span="20" class="text">
+            <el-popover placement="right-start" trigger="hover">
+              <span class="code_text">{{ transaction.signer.cert }}</span>
+              <i class="el-icon-bank-card" slot="reference"></i>
+            </el-popover>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4" class="label">提案请求者签名：</el-col>
+          <el-col :span="20" class="text">{{ transaction.signature }}</el-col>
+        </el-row>
+      </div>
       <div>
         <el-row>
           <el-col :span="4" class="label">通道：</el-col>
@@ -42,6 +63,7 @@
         <div class="head"><span> 回复数据</span></div>
         <div class="arg_text">回复状态：{{ transaction.resp.status }}</div>
         <div class="arg_text">回复消息：{{ transaction.resp.message }}</div>
+        <div class="arg_text">回复数据：{{ transaction.resp.data }}</div>
       </el-col>
     </el-row>
   </el-card>
@@ -67,5 +89,20 @@ export default {
   word-break: break-all;
   text-align: left;
   padding-left: 5px;
+}
+
+.text {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.code_text {
+  font-family: Menlo, Monaco, Consolas, Courier, monospace;
+  font-size: smaller;
+}
+
+.cert_icon {
+  margin-left: 6px;
+  margin-top: 2px;
 }
 </style>

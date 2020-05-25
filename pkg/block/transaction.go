@@ -1,11 +1,13 @@
 package block
 
 import (
+	"encoding/base64"
 	"errors"
 	"time"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/fabric-protos-go/common"
+	"github.com/hyperledger/fabric-protos-go/msp"
 	"github.com/hyperledger/fabric-protos-go/peer"
 )
 
@@ -18,8 +20,10 @@ type Translator struct {
 // NewTranslator return new Translator
 func NewTranslator(env *common.Envelope) (*Translator, error) {
 	translator := &Translator{
-		env:      env,
-		innerEnv: &Envelope{},
+		env: env,
+		innerEnv: &Envelope{
+			Signature: env.Signature,
+		},
 	}
 	if err := translator.init(); err != nil {
 		return nil, err
@@ -114,6 +118,16 @@ func (t *Translator) ToDesc() *TranDesc {
 	}
 	td.Resp.Status = t.innerEnv.Payload.Transaction.ChaincodeAction.Response.ChaincodeAction.Response.Status
 	td.Resp.Message = t.innerEnv.Payload.Transaction.ChaincodeAction.Response.ChaincodeAction.Response.Message
+	td.Resp.Data = string(t.innerEnv.Payload.Transaction.ChaincodeAction.Response.ChaincodeAction.Response.Payload)
+	td.Signature = base64.StdEncoding.EncodeToString(t.innerEnv.Signature)
+	seri := t.innerEnv.Payload.Header.SignatureHeader.Creator
+	creator := &msp.SerializedIdentity{}
+	err := proto.Unmarshal(seri, creator)
+	if err != nil {
+		//TODO:
+	}
+	td.Signer.MSPID = creator.Mspid
+	td.Signer.Cert = string(creator.IdBytes)
 	return td
 }
 

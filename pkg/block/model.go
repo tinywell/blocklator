@@ -73,9 +73,15 @@ type TranDesc struct {
 	Func      string    `json:"func,omitempty" db:"func"`
 	Args      []string  `json:"args,omitempty" db:"args"`
 	Resp      struct {
-		Status  int32  `json:"status" db:"status"`
-		Message string `json:"message" db:"message"`
+		Status  int32  `json:"status,omitempty" db:"status"`
+		Message string `json:"message,omitempty" db:"message"`
+		Data    string `json:"data,omitempty" db:"data"`
 	} `json:"resp,omitempty" db:"resp"`
+	Signer struct {
+		MSPID string `json:"mspid,omitempty" db:"mspid"`
+		Cert  string `json:"cert,omitempty" db:"cert"`
+	} `json:"signer,omitempty" db:"signer"`
+	Signature string `json:"signature,omitempty" db:"signature"`
 }
 
 // Envelope clean struct for envelope
