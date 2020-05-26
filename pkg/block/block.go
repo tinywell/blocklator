@@ -16,15 +16,15 @@ type Blocklator struct {
 }
 
 // NewBlocklator return new Blocklator
-func NewBlocklator(raw []byte) *Blocklator {
+func NewBlocklator(raw []byte) (*Blocklator, error) {
 	cb := &common.Block{}
 	err := proto.Unmarshal(raw, cb)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 	return &Blocklator{
 		block: cb,
-	}
+	}, nil
 }
 
 // GetBlockNum return block num
@@ -104,6 +104,20 @@ func (bl *Blocklator) GetMetaDataTransFilter() ([]bool, error) {
 	return nil, errors.New("no metadata for transaction filter")
 }
 
+// GetCommitHash get commit hash of the block
+func (bl *Blocklator) GetCommitHash() (string, error) {
+	if len(bl.block.Metadata.Metadata) > int(common.BlockMetadataIndex_COMMIT_HASH) {
+		meta := &common.Metadata{}
+		hash := bl.block.Metadata.Metadata[common.BlockMetadataIndex_COMMIT_HASH]
+		err := proto.Unmarshal(hash, meta)
+		if err != nil {
+			return "", err
+		}
+		return strings.ToUpper(hex.EncodeToString(meta.Value)), nil
+	}
+	return "", errors.New("no commit hash,invalid block metadata")
+}
+
 // GetConfig get config from block
 func (bl *Blocklator) GetConfig() *common.Config {
 	if len(bl.block.Data.Data) > 1 || len(bl.block.Data.Data) < 1 {
@@ -140,4 +154,50 @@ func (bl *Blocklator) GetTransactions() []*common.Envelope {
 		envs = append(envs, env)
 	}
 	return envs
+}
+
+// ToDesc block to Desc
+func (bl *Blocklator) ToDesc() (*Desc, error) {
+	blockdesc := &Desc{}
+	blockdesc.BlockNum = bl.GetBlockNum()
+	channel, err := bl.GetChannel()
+	if err != nil {
+		blockdesc.Channel = ""
+	}
+	blockdesc.Channel = channel
+	blockdesc.Hash = bl.GetBlockHash()
+	blockdesc.PreHash = bl.GetBlockPrehash()
+	blockdesc.CommitHash, err = bl.GetCommitHash()
+	if err != nil {
+		return nil, err
+	}
+	blockdesc.LastConfig, err = bl.GetMetaDataLastConfig()
+	if err != nil {
+		return nil, err
+	}
+	config := bl.GetConfig()
+	if config == nil {
+		blockdesc.Type = BlockTypeTrans
+		filters, err := bl.GetMetaDataTransFilter()
+		if err != nil {
+			return nil, err
+		}
+		trans := bl.GetTransactions()
+		for i, t := range trans {
+			translator, err := NewTranslator(t)
+			if err != nil {
+				continue
+			}
+			desc := translator.ToDesc()
+			desc.Filter = filters[i]
+			blockdesc.Transactions = append(blockdesc.Transactions, desc)
+		}
+		blockdesc.TransCount = len(trans)
+	} else {
+		cfg := NewConfiglator(config)
+		cfgdesc := cfg.ToDesc()
+		blockdesc.Type = BlockTypeConfig
+		blockdesc.Config = cfgdesc
+	}
+	return blockdesc, nil
 }

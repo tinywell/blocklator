@@ -16,11 +16,19 @@
       <el-col :span="4" class="label">前区块哈希：</el-col>
       <el-col :span="20" class="text code_text">{{ block.pre_hash }}</el-col>
     </el-row>
+    <el-row>
+      <el-col :span="4" class="label">Commit 哈希：</el-col>
+      <el-col :span="20" class="text code_text">{{ block.commit_hash }}</el-col>
+    </el-row>
+    <el-row class="row">
+      <el-col :span="4" class="label">配置区块号：</el-col>
+      <el-col :span="20" class="text">{{ block.last_config }}</el-col>
+    </el-row>
     <el-row class="row">
       <el-col :span="4" class="label">区块类型：</el-col>
-      <el-col :span="20" class="text">
-        {{ this.$consts.BlockTypeOptsMap[block.type] }}
-      </el-col>
+      <el-col :span="20" class="text">{{
+        this.$consts.BlockTypeOptsMap[block.type]
+      }}</el-col>
     </el-row>
   </el-card>
 </template>
