@@ -70,7 +70,7 @@ type ConfigDesc struct {
 // SignInfo sign info
 type SignInfo struct {
 	MSPID     string `json:"mspid,omitempty" db:"mspid"`
-	Cert      string `json:"cert,omitempty" db:"cert"`
+	Cert      *Cert  `json:"cert,omitempty" db:"cert"`
 	Signature string `json:"signature,omitempty" db:"signature"`
 }
 
@@ -87,9 +87,9 @@ type TranDesc struct {
 		Message string `json:"message," db:"message"`
 		Data    string `json:"data," db:"data"`
 	} `json:"resp," db:"resp"`
-	Filter    bool       `json:"filter," db:"filter"`
-	Signer    SignInfo   `json:"signer," db:"signer"`
-	Endorsers []SignInfo `json:"endorsers," db:"endorsers"`
+	Filter    bool        `json:"filter," db:"filter"`
+	Signer    *SignInfo   `json:"signer," db:"signer"`
+	Endorsers []*SignInfo `json:"endorsers," db:"endorsers"`
 }
 
 // Envelope clean struct for envelope

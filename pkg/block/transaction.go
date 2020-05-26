@@ -126,20 +126,31 @@ func (t *Translator) ToDesc() *TranDesc {
 	if err != nil {
 		//TODO:
 	}
-	td.Signer.MSPID = creator.Mspid
-	td.Signer.Cert = string(creator.IdBytes)
-	td.Signer.Signature = base64.StdEncoding.EncodeToString(t.innerEnv.Signature)
+	si := &SignInfo{
+		MSPID:     creator.Mspid,
+		Signature: base64.StdEncoding.EncodeToString(t.innerEnv.Signature),
+	}
+	si.Cert, err = NewCert(creator.IdBytes)
+	if err != nil {
+		//TODO:
+	}
+	td.Signer = si
 	for _, e := range t.innerEnv.Payload.Transaction.ChaincodeAction.Endorses {
 		er := &msp.SerializedIdentity{}
 		err := proto.Unmarshal(e.Endorser, er)
 		if err != nil {
 			//TODO:
 		}
-		td.Endorsers = append(td.Endorsers, SignInfo{
+		si := &SignInfo{
 			MSPID:     er.Mspid,
-			Cert:      string(er.IdBytes),
 			Signature: base64.StdEncoding.EncodeToString(e.Signature),
-		})
+		}
+		cert, err := NewCert(er.IdBytes)
+		if err != nil {
+			//TODO:
+		}
+		si.Cert = cert
+		td.Endorsers = append(td.Endorsers, si)
 	}
 	return td
 }
