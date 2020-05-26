@@ -59,6 +59,16 @@ func (c *Configlator) GetValues() *ConfigValues {
 		return nil
 	}
 	values.OrdererAddresses = pod.Addresses
+	cap := &common.Capabilities{}
+	err = proto.Unmarshal(c.config.ChannelGroup.Values[CapabilitiesKey].Value, cap)
+	if err != nil {
+		return nil
+	}
+	caps := []string{}
+	for k := range cap.Capabilities {
+		caps = append(caps, k)
+	}
+	values.Capabilities = caps
 	return values
 }
 
@@ -165,8 +175,8 @@ func (c *Configlator) GetApplicationOrgs() []*GroupOrg {
 func (c *Configlator) GetConsortiumOrgs() map[string][]*GroupOrg {
 	corgs := make(map[string][]*GroupOrg)
 
-	if _, ok := c.config.ChannelGroup.Groups[ConsortiumKey]; ok {
-		for cn, g := range c.config.ChannelGroup.Groups[ConsortiumKey].Groups {
+	if _, ok := c.config.ChannelGroup.Groups[ConsortiumsGroupKey]; ok {
+		for cn, g := range c.config.ChannelGroup.Groups[ConsortiumsGroupKey].Groups {
 			orgs := []*GroupOrg{}
 			for _, o := range g.Groups {
 				mspvalue := o.Values[MSPKey].Value

@@ -16,13 +16,13 @@ const (
 
 // GroupOrg 配置块中的组织信息
 type GroupOrg struct {
-	Type           int32    `json:"type,omitempty" db:"type"`
-	Name           string   `json:"name,omitempty" db:"name"`
-	RootCert       string   `json:"root_cert,omitempty" db:"root_cert"`
-	TLSRootCert    string   `json:"tls_root_cert,omitempty" db:"tls_root_cert"`
-	Admin          string   `json:"admin,omitempty" db:"admin"`
-	RevocationList [][]byte `json:"revocation_list,omitempty" db:"revocation_list"`
-	Endpoints      []string `json:"endpoints,omitempty" db:"endpoints"` // peer: anchorpeers  orderer: ordereraddress
+	Type           int32    `json:"type" db:"type"`
+	Name           string   `json:"name" db:"name"`
+	RootCert       string   `json:"root_cert" db:"root_cert"`
+	TLSRootCert    string   `json:"tls_root_cert" db:"tls_root_cert"`
+	Admin          string   `json:"admin" db:"admin"`
+	RevocationList [][]byte `json:"revocation_list" db:"revocation_list"`
+	Endpoints      []string `json:"endpoints" db:"endpoints"` // peer: anchorpeers  orderer: ordereraddress
 }
 
 // ConsensusInfo 配置快中的共识信息
@@ -42,6 +42,7 @@ type ConfigValues struct {
 	HashingAlgorithm      string   `json:"hashing_algorithm,omitempty" db:"hashing_algorithm"`
 	OrdererAddresses      []string `json:"orderer_addresses,omitempty" db:"orderer_addresses"`
 	BlockDataHashingWidth int      `json:"block_data_hashing_width,omitempty" db:"block_data_hashing_width"`
+	Capabilities          []string `json:"capabilities,omitempty" db:"capabilities"`
 }
 
 // Desc block description

@@ -2,7 +2,7 @@
   <div class="org-card">
     <div class="card_name">{{ org.name }}</div>
     <div class="card_split"></div>
-    <el-tabs tab-position="left" style="height: 300px;">
+    <el-tabs tab-position="left">
       <el-tab-pane label="根证书">
         <div class="card_certs">{{ org.root_cert }}</div>
       </el-tab-pane>
@@ -14,7 +14,8 @@
       </el-tab-pane>
     </el-tabs>
     <div class="card_endpoints">
-      Endpoints:
+      <span v-if="org_type === 'peer'">AnchorPeers:</span>
+      <span v-else-if="org_type === 'orderer'">OrdererAddresses:</span>
       <el-tag
         v-for="endpoint in org.endpoints"
         :key="endpoint"
@@ -31,7 +32,8 @@
 <script>
 export default {
   props: {
-    org: Object
+    org: Object,
+    org_type: String
   }
 };
 </script>
