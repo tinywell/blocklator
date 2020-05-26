@@ -21,3 +21,11 @@ jobs:
           dockerfile: ./docker/Dockerfile
           tag_names: true
           cache: true
+      - name: executing remote ssh commands using key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USERNAME }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          script: |
+            cd blocklator && ./update.sh
