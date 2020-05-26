@@ -60,7 +60,7 @@
           >
             <el-popover
               trigger="hover"
-              placement="right"
+              placement="bottom"
               width="700"
               show="show"
             >
@@ -81,7 +81,7 @@
           <li class="org" v-for="org in block.config.orderer_orgs" :key="org">
             <el-popover
               trigger="hover"
-              placement="right"
+              placement="bottom"
               width="700"
               show="show"
             >

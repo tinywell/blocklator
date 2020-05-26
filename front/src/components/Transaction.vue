@@ -12,18 +12,7 @@
           <el-col :span="4" class="label">提案请求者证书：</el-col>
           <el-col :span="20" class="text">
             <el-popover placement="right-start" trigger="hover">
-              <div>
-                <div class="code_text">
-                  用户：{{ transaction.signer.cert.cn }}
-                </div>
-                <div class="code_text">
-                  组织：{{ transaction.signer.cert.org }}
-                </div>
-                <div class="code_text">
-                  角色：{{ transaction.signer.cert.ou }}
-                </div>
-                <div class="code_text">{{ transaction.signer.cert.pem }}</div>
-              </div>
+              <cert :cert="transaction.signer.cert"></cert>
               <i class="el-icon-bank-card" slot="reference"></i>
             </el-popover>
           </el-col>
@@ -88,12 +77,7 @@
         class="endorse"
         >[{{ i }}]
         <el-popover placement="right-start" trigger="hover">
-          <div>
-            <div class="code_text">用户：{{ e.cert.cn }}</div>
-            <div class="code_text">组织：{{ e.cert.org }}</div>
-            <div class="code_text">角色：{{ e.cert.ou }}</div>
-            <div class="code_text">{{ e.cert.pem }}</div>
-          </div>
+          <cert :cert="e.cert"></cert>
           <i class="el-icon-bank-card" slot="reference"></i>
         </el-popover>
         <span>{{ e.signature }}</span>
@@ -103,7 +87,12 @@
 </template>
 
 <script>
+import cert from "./Cert.vue";
+
 export default {
+  components: {
+    cert
+  },
   props: {
     transaction: Object
   }
