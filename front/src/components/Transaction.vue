@@ -12,7 +12,18 @@
           <el-col :span="4" class="label">提案请求者证书：</el-col>
           <el-col :span="20" class="text">
             <el-popover placement="right-start" trigger="hover">
-              <span class="code_text">{{ transaction.signer.cert }}</span>
+              <div>
+                <div class="code_text">
+                  用户：{{ transaction.signer.cert.cn }}
+                </div>
+                <div class="code_text">
+                  组织：{{ transaction.signer.cert.org }}
+                </div>
+                <div class="code_text">
+                  角色：{{ transaction.signer.cert.ou }}
+                </div>
+                <div class="code_text">{{ transaction.signer.cert.pem }}</div>
+              </div>
               <i class="el-icon-bank-card" slot="reference"></i>
             </el-popover>
           </el-col>
@@ -69,6 +80,25 @@
         <div class="arg_text">回复数据：{{ transaction.resp.data }}</div>
       </el-col>
     </el-row>
+    <el-row>
+      <div class="head">背书签名</div>
+      <el-row
+        v-for="(e, i) in transaction.endorsers"
+        :key="(e, i)"
+        class="endorse"
+        >[{{ i }}]
+        <el-popover placement="right-start" trigger="hover">
+          <div>
+            <div class="code_text">用户：{{ e.cert.cn }}</div>
+            <div class="code_text">组织：{{ e.cert.org }}</div>
+            <div class="code_text">角色：{{ e.cert.ou }}</div>
+            <div class="code_text">{{ e.cert.pem }}</div>
+          </div>
+          <i class="el-icon-bank-card" slot="reference"></i>
+        </el-popover>
+        <span>{{ e.signature }}</span>
+      </el-row>
+    </el-row>
   </el-card>
 </template>
 
@@ -116,5 +146,12 @@ export default {
   text-align: left;
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.endorse {
+  list-style: none;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 </style>
