@@ -167,7 +167,6 @@ func (bl *Blocklator) ToDesc() (*Desc, error) {
 	blockdesc.Channel = channel
 	blockdesc.Hash = bl.GetBlockHash()
 	blockdesc.PreHash = bl.GetBlockPrehash()
-	blockdesc.CommitHash, err = bl.GetCommitHash()
 	if err != nil {
 		return nil, err
 	}
@@ -193,6 +192,7 @@ func (bl *Blocklator) ToDesc() (*Desc, error) {
 			blockdesc.Transactions = append(blockdesc.Transactions, desc)
 		}
 		blockdesc.TransCount = len(trans)
+		blockdesc.CommitHash, err = bl.GetCommitHash()
 	} else {
 		cfg := NewConfiglator(config)
 		cfgdesc := cfg.ToDesc()

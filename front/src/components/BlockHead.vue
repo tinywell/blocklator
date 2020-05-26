@@ -12,11 +12,11 @@
       <el-col :span="4" class="label">区块哈希：</el-col>
       <el-col :span="20" class="text code_text">{{ block.hash }}</el-col>
     </el-row>
-    <el-row>
+    <el-row v-if="block.block_num > 0">
       <el-col :span="4" class="label">前区块哈希：</el-col>
       <el-col :span="20" class="text code_text">{{ block.pre_hash }}</el-col>
     </el-row>
-    <el-row>
+    <el-row v-if="block.type == 0">
       <el-col :span="4" class="label">Commit 哈希：</el-col>
       <el-col :span="20" class="text code_text">{{ block.commit_hash }}</el-col>
     </el-row>
