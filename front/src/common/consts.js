@@ -1,5 +1,8 @@
-// const ServerAddrPre = 'http://localhost:8080/api';
-const ServerAddrPre = '/api';
+let ServerAddrPre = '/api';
+if(process.env.NODE_ENV==="development"){
+  ServerAddrPre = 'http://localhost:8080/api';
+}
+
 
 const BlockTypeOpts = [
     { text: '配置区块', value: 1 },
