@@ -46,13 +46,13 @@ type ConfigValues struct {
 
 // Desc block description
 type Desc struct {
-	BlockNum     uint64      `json:"block_num" db:"block_num"`
-	Hash         string      `json:"hash" db:"hash"`
-	PreHash      string      `json:"pre_hash" db:"pre_hash"`
-	Channel      string      `json:"channel" db:"channel"`
-	Type         int         `json:"type" db:"type"` // 0: transaction 1: config
-	Config       *ConfigDesc `json:"config,omitempty" db:"config"`
-	Transactions []*TranDesc `json:"transactions,omitempty" db:"transactions"`
+	BlockNum     uint64      `json:"block_num," db:"block_num"`
+	Hash         string      `json:"hash," db:"hash"`
+	PreHash      string      `json:"pre_hash," db:"pre_hash"`
+	Channel      string      `json:"channel," db:"channel"`
+	Type         int         `json:"type," db:"type"` // 0: transaction 1: config
+	Config       *ConfigDesc `json:"config," db:"config"`
+	Transactions []*TranDesc `json:"transactions," db:"transactions"`
 }
 
 // ConfigDesc config description
@@ -64,24 +64,29 @@ type ConfigDesc struct {
 	Consensus       *ConsensusInfo         `json:"consensus" db:"consensus"`
 }
 
+// SignInfo sign info
+type SignInfo struct {
+	MSPID     string `json:"mspid,omitempty" db:"mspid"`
+	Cert      string `json:"cert,omitempty" db:"cert"`
+	Signature string `json:"signature,omitempty" db:"signature"`
+}
+
 // TranDesc transaction description
 type TranDesc struct {
-	Channel   string    `json:"channel,omitempty" db:"channel"`
-	TxID      string    `json:"tx_id,omitempty" db:"tx_id"`
-	Time      time.Time `json:"time,omitempty" db:"time"`
-	Chaincode string    `json:"chaincode,omitempty" db:"chaincode"`
-	Func      string    `json:"func,omitempty" db:"func"`
-	Args      []string  `json:"args,omitempty" db:"args"`
+	Channel   string    `json:"channel," db:"channel"`
+	TxID      string    `json:"tx_id," db:"tx_id"`
+	Time      time.Time `json:"time," db:"time"`
+	Chaincode string    `json:"chaincode," db:"chaincode"`
+	Func      string    `json:"func," db:"func"`
+	Args      []string  `json:"args," db:"args"`
 	Resp      struct {
-		Status  int32  `json:"status,omitempty" db:"status"`
-		Message string `json:"message,omitempty" db:"message"`
-		Data    string `json:"data,omitempty" db:"data"`
-	} `json:"resp,omitempty" db:"resp"`
-	Signer struct {
-		MSPID string `json:"mspid,omitempty" db:"mspid"`
-		Cert  string `json:"cert,omitempty" db:"cert"`
-	} `json:"signer,omitempty" db:"signer"`
-	Signature string `json:"signature,omitempty" db:"signature"`
+		Status  int32  `json:"status," db:"status"`
+		Message string `json:"message," db:"message"`
+		Data    string `json:"data," db:"data"`
+	} `json:"resp," db:"resp"`
+	Filter    bool       `json:"filter," db:"filter"`
+	Signer    SignInfo   `json:"signer," db:"signer"`
+	Endorsers []SignInfo `json:"endorsers," db:"endorsers"`
 }
 
 // Envelope clean struct for envelope

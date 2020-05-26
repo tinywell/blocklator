@@ -58,14 +58,18 @@ func forblock(data []byte) *block.Desc {
 	config := blocklator.GetConfig()
 	if config == nil {
 		blockdesc.Type = block.BlockTypeTrans
+		filters, err := blocklator.GetMetaDataTransFilter()
+		if err != nil {
+			return nil
+		}
 		trans := blocklator.GetTransactions()
-
-		for _, t := range trans {
+		for i, t := range trans {
 			translator, err := block.NewTranslator(t)
 			if err != nil {
 				continue
 			}
 			desc := fortransactions(translator)
+			desc.Filter = filters[i]
 			blockdesc.Transactions = append(blockdesc.Transactions, desc)
 		}
 	} else {

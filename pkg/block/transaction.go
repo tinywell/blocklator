@@ -119,7 +119,7 @@ func (t *Translator) ToDesc() *TranDesc {
 	td.Resp.Status = t.innerEnv.Payload.Transaction.ChaincodeAction.Response.ChaincodeAction.Response.Status
 	td.Resp.Message = t.innerEnv.Payload.Transaction.ChaincodeAction.Response.ChaincodeAction.Response.Message
 	td.Resp.Data = string(t.innerEnv.Payload.Transaction.ChaincodeAction.Response.ChaincodeAction.Response.Payload)
-	td.Signature = base64.StdEncoding.EncodeToString(t.innerEnv.Signature)
+
 	seri := t.innerEnv.Payload.Header.SignatureHeader.Creator
 	creator := &msp.SerializedIdentity{}
 	err := proto.Unmarshal(seri, creator)
@@ -128,6 +128,19 @@ func (t *Translator) ToDesc() *TranDesc {
 	}
 	td.Signer.MSPID = creator.Mspid
 	td.Signer.Cert = string(creator.IdBytes)
+	td.Signer.Signature = base64.StdEncoding.EncodeToString(t.innerEnv.Signature)
+	for _, e := range t.innerEnv.Payload.Transaction.ChaincodeAction.Endorses {
+		er := &msp.SerializedIdentity{}
+		err := proto.Unmarshal(e.Endorser, er)
+		if err != nil {
+			//TODO:
+		}
+		td.Endorsers = append(td.Endorsers, SignInfo{
+			MSPID:     er.Mspid,
+			Cert:      string(er.IdBytes),
+			Signature: base64.StdEncoding.EncodeToString(e.Signature),
+		})
+	}
 	return td
 }
 
