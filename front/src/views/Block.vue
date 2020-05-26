@@ -44,10 +44,17 @@ export default {
             }
           });
         }
+      } else {
+        this.$message({
+          message: "区块解析错误，请检查上传文件是否正确",
+          type: "warnning"
+        });
       }
     },
     onError(err, file, fileList) {
-      console.log(this.action);
+      // console.log(this.action);
+      // console.log(err);
+      this.$message.error("上传失败");
     }
   }
 };

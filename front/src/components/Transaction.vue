@@ -1,6 +1,6 @@
 <template>
   <el-card style="margin-top:5px;">
-    <el-row style="border-bottom:dotted;border-width:1px;" class="border">
+    <el-row>
       <div style="margin-bottom:5px">
         <el-row>
           <el-col :span="4" class="label">提案请求MSPID：</el-col>
@@ -19,7 +19,9 @@
         </el-row>
         <el-row>
           <el-col :span="4" class="label">提案请求者签名：</el-col>
-          <el-col :span="20" class="text">{{ transaction.signature }}</el-col>
+          <el-col :span="20" class="text">{{
+            transaction.signer.signature
+          }}</el-col>
         </el-row>
       </div>
       <div>
@@ -36,6 +38,10 @@
           <el-col :span="20" class="text">{{ transaction.time }}</el-col>
         </el-row>
         <el-row>
+          <el-col :span="4" class="label">交易有效性：</el-col>
+          <el-col :span="20" class="text">{{ transaction.filter }}</el-col>
+        </el-row>
+        <el-row>
           <el-col :span="4" class="label">链码：</el-col>
           <el-col :span="20" class="text">{{ transaction.chaincode }}</el-col>
         </el-row>
@@ -45,18 +51,15 @@
         </el-row>
       </div>
     </el-row>
-    <el-row>
-      <el-col
-        :span="12"
-        style="border-right:dotted;border-width:1px;text-aligin:left;"
-      >
+    <el-row class="border">
+      <el-col :span="12">
         <div class="head"><span> 请求参数</span></div>
         <div
           v-for="(arg, index) in transaction.args"
           :key="(index, arg)"
           class="arg_text"
         >
-          [{{ index }}]{{ arg }}
+          [{{ index }}] {{ arg }}
         </div>
       </el-col>
       <el-col :span="12">
@@ -82,6 +85,7 @@ export default {
   font-weight: bold;
   font-size: small;
   margin: 5px;
+  text-align: center;
 }
 
 .arg_text {
@@ -104,5 +108,13 @@ export default {
 .cert_icon {
   margin-left: 6px;
   margin-top: 2px;
+}
+
+.border {
+  border: 1px dotted #e9edf0;
+  background-color: #e9edf0;
+  text-align: left;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 </style>
