@@ -20,6 +20,10 @@
       <el-col :span="4" class="label">Commit 哈希：</el-col>
       <el-col :span="20" class="text code_text">{{ block.commit_hash }}</el-col>
     </el-row>
+    <el-row v-if="block.type == 0">
+      <el-col :span="4" class="label">交易数量：</el-col>
+      <el-col :span="20" class="text code_text">{{ block.trans_count }}</el-col>
+    </el-row>
     <el-row class="row">
       <el-col :span="4" class="label">配置区块号：</el-col>
       <el-col :span="20" class="text">{{ block.last_config }}</el-col>

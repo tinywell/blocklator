@@ -2,7 +2,7 @@ version: "2"
 
 services:
   blocklator:
-    container_name: cli
+    container_name: blocklator
     image: tinywell/blocklator:latest
     tty: true
     stdin_open: true

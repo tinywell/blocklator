@@ -38,6 +38,11 @@ Vue.use(VueRouter)
     name: 'Ledger',
     component: () => import(/* webpackChunkName: "Ledger" */ '../views/Ledger.vue')
   },
+  {
+    path: '/blocklist',
+    name: 'BlockList',
+    component: () => import(/* webpackChunkName: "BlockList" */ '../views/BlockList.vue')
+  },
 ]
 
 const router = new VueRouter({

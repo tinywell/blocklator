@@ -15,6 +15,8 @@ func CollectRouter(mode, static string) *gin.Engine {
 
 	r.Static("/", static)
 	r.POST("/api/block/file", BlockFile)
+	r.POST("/api/block/raw", BlockRaw)
+	r.POST("/api/ledger/file", LedgerFile)
 
 	return r
 }

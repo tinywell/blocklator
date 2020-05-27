@@ -45,18 +45,31 @@ type ConfigValues struct {
 	Capabilities          []string `json:"capabilities,omitempty" db:"capabilities"`
 }
 
+//Summary block summary info
+type Summary struct {
+	BlockNum   uint64 `json:"block_num" db:"block_num"`
+	Hash       string `json:"hash" db:"hash"`
+	PreHash    string `json:"pre_hash" db:"pre_hash"`
+	Channel    string `json:"channel" db:"channel"`
+	Type       int    `json:"type" db:"type"` // 0: transaction 1: config
+	TransCount int    `json:"trans_count" db:"trans_count"`
+	CommitHash string `json:"commit_hash" db:"commit_hash"`
+	LastConfig uint64 `json:"last_config" db:"last_config"`
+}
+
 // Desc block description
 type Desc struct {
-	BlockNum     uint64      `json:"block_num" db:"block_num"`
-	Hash         string      `json:"hash" db:"hash"`
-	PreHash      string      `json:"pre_hash" db:"pre_hash"`
-	Channel      string      `json:"channel" db:"channel"`
-	Type         int         `json:"type" db:"type"` // 0: transaction 1: config
+	Summary
+	// BlockNum     uint64      `json:"block_num" db:"block_num"`
+	// Hash         string      `json:"hash" db:"hash"`
+	// PreHash      string      `json:"pre_hash" db:"pre_hash"`
+	// Channel      string      `json:"channel" db:"channel"`
+	// Type         int         `json:"type" db:"type"` // 0: transaction 1: config
 	Config       *ConfigDesc `json:"config" db:"config"`
 	Transactions []*TranDesc `json:"transactions" db:"transactions"`
-	TransCount   int         `json:"trans_count" db:"trans_count"`
-	CommitHash   string      `json:"commit_hash" db:"commit_hash"`
-	LastConfig   uint64      `json:"last_config" db:"last_config"`
+	// TransCount   int         `json:"trans_count" db:"trans_count"`
+	// CommitHash   string      `json:"commit_hash" db:"commit_hash"`
+	// LastConfig   uint64      `json:"last_config" db:"last_config"`
 }
 
 // ConfigDesc config description

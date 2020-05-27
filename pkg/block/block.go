@@ -27,6 +27,17 @@ func NewBlocklator(raw []byte) (*Blocklator, error) {
 	}, nil
 }
 
+// NewBlocklatorFromLedgerRaw return new Blocklator from block data in ledger
+func NewBlocklatorFromLedgerRaw(raw []byte) (*Blocklator, error) {
+	block, err := ExtractLeaderBlock(raw)
+	if err != nil {
+		return nil, err
+	}
+	return &Blocklator{
+		block: block,
+	}, nil
+}
+
 // GetBlockNum return block num
 func (bl *Blocklator) GetBlockNum() uint64 {
 	return bl.block.Header.Number
@@ -154,6 +165,39 @@ func (bl *Blocklator) GetTransactions() []*common.Envelope {
 		envs = append(envs, env)
 	}
 	return envs
+}
+
+// GetSummary get block summary info
+func (bl *Blocklator) GetSummary() (*Summary, error) {
+	sum := &Summary{}
+	sum.BlockNum = bl.GetBlockNum()
+	channel, err := bl.GetChannel()
+	if err != nil {
+		sum.Channel = ""
+	}
+	sum.Channel = channel
+	sum.Hash = bl.GetBlockHash()
+	sum.PreHash = bl.GetBlockPrehash()
+	if err != nil {
+		return nil, err
+	}
+	sum.LastConfig, err = bl.GetMetaDataLastConfig()
+	if err != nil {
+		return nil, err
+	}
+	config := bl.GetConfig()
+	if config == nil {
+		sum.Type = BlockTypeTrans
+		filters, err := bl.GetMetaDataTransFilter()
+		if err != nil {
+			return nil, err
+		}
+		sum.TransCount = len(filters)
+		sum.CommitHash, err = bl.GetCommitHash()
+	} else {
+		sum.Type = BlockTypeConfig
+	}
+	return sum, nil
 }
 
 // ToDesc block to Desc
