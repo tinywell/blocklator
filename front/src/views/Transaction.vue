@@ -57,15 +57,14 @@ export default {
   },
   methods: {
     init() {
-      if (this.$route.params.block != null) {
-        this.block = this.$route.params.block;
+      if (localStorage.block) {
+        this.block = JSON.parse(localStorage.block);
       } else {
         this.$message({
           message: "没有区块数据",
           type: "warning"
         });
       }
-      // console.log("block:", this.block);
     }
   },
   mounted() {

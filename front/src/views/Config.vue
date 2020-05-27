@@ -301,16 +301,19 @@ export default {
   },
   methods: {
     init() {
-      if (this.$route.params.block != null) {
-        this.block = this.$route.params.block;
+      if (localStorage.block) {
+        this.block = JSON.parse(localStorage.block);
+        // }
+        // if (this.$route.params.block != null) {
+        //   this.block = this.$route.params.block;
       } else {
         this.$message({
           message: "没有发现区块数据，请重新上传",
           type: "warnning"
         });
       }
-      console.log(this.block);
-      console.log(this.block.config.consortium_orgs);
+      // console.log(this.block);
+      // console.log(this.block.config.consortium_orgs);
     }
   },
   mounted() {

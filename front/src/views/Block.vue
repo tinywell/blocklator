@@ -9,10 +9,10 @@
       :on-error="onError"
     >
       <i class="el-icon-upload"></i>
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <div class="el-upload__text">将区块文件拖到此处，或<em>点击上传</em></div>
       <div class="el-upload__tip" slot="tip">
-        上传单个区块文件，通过 'peer channel fetch'
-        命令或其他方式从网络中拉取的区块文件
+        上传通过 'peer channel fetch'
+        命令或其他方式从网络中拉取的单个区块文件(eg：mychannel.block)
       </div>
     </el-upload>
   </el-main>
@@ -29,19 +29,20 @@ export default {
     success(response, file, fileList) {
       console.log(response);
       if (response.code == 200) {
+        localStorage.block = JSON.stringify(response.data);
         if (response.data.type == 1) {
           this.$router.push({
-            name: "Config",
-            params: {
-              block: response.data
-            }
+            name: "Config"
+            // params: {
+            //   block: response.data
+            // }
           });
         } else if (response.data.type == 0) {
           this.$router.push({
-            name: "Transaction",
-            params: {
-              block: response.data
-            }
+            name: "Transaction"
+            // params: {
+            //   block: response.data
+            // }
           });
         }
       } else {
