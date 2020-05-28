@@ -11,7 +11,7 @@
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将账本文件拖到此处，或<em>点击上传</em></div>
       <div class="el-upload__tip" slot="tip">
-        上传 fabric 账本文件（eg:blockfile_000000）
+        上传 fabric peer 节点存储的账本文件（eg:blockfile_000000）
       </div>
     </el-upload>
   </el-main>

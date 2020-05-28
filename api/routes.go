@@ -13,10 +13,11 @@ func CollectRouter(mode, static string) *gin.Engine {
 	r := gin.Default()
 	r.Use(cors.Default())
 
-	r.Static("/", static)
+	r.Static("/front", static)
 	r.POST("/api/block/file", BlockFile)
 	r.POST("/api/block/raw", BlockRaw)
 	r.POST("/api/ledger/file", LedgerFile)
+	r.GET("/api/ledger/blocks", LedgerBlocks)
 
 	return r
 }

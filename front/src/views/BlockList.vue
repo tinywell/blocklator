@@ -4,12 +4,22 @@
       <!-- <el-main> -->
       <div style="width:900px">
         <blockhead
+          :v-if="blocks"
           v-for="block in blocks"
           :key="block"
           :block="block"
           style="margin-bottom:10px"
           v-on:dblclick.native="detail(block)"
         ></blockhead>
+        <el-pagination
+          :v-if="pagination"
+          @current-change="handleCurrentChange"
+          :current-page.sync="curpage"
+          :page-size="20"
+          layout="total, prev, pager, next"
+          :total="total"
+        >
+        </el-pagination>
       </div>
     </div>
   </el-main>
@@ -25,13 +35,23 @@ export default {
     blocks: Array
   },
   data() {
-    return {};
+    return {
+      curpage: 0,
+      total: 0,
+      pagination: false,
+      key: ""
+    };
   },
   methods: {
     init() {
       if (localStorage.ledger) {
-        this.blocks = JSON.parse(localStorage.ledger);
-        localStorage.removeItem("block");
+        const ledger = JSON.parse(localStorage.ledger);
+        this.blocks = ledger.blocks;
+        this.pagination = ledger.pagination;
+        this.curpage = ledger.cur_page;
+        this.total = ledger.total;
+        this.key = ledger.key;
+        this.localStorage.removeItem("block");
       } else {
         this.$message({
           message: "没有发现区块数据，请重新上传账本",
@@ -58,6 +78,31 @@ export default {
           type: "warnning"
         });
       }
+    },
+    handleCurrentChange(page) {
+      const action = `${this.$consts.ServerAddrPre}/ledger/blocks`;
+      this.$axios
+        .get(action, {
+          params: {
+            key: this.key,
+            page: page
+          }
+        })
+        .then(rsp => {
+          console.log(rsp);
+          if (rsp.data.code === 200) {
+            this.blocks = rsp.data.data.blocks;
+            localStorage.ledger = JSON.stringify(rsp.data.data);
+          } else {
+            this.$message({
+              message: "请求数据出错" + rsp.data.msg,
+              type: "warnning"
+            });
+          }
+        })
+        .catch(err => {
+          this.$message.error(err.message);
+        });
     }
   },
   mounted() {
