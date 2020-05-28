@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/gin-contrib/cors v1.3.1
+	github.com/gin-contrib/static v0.0.0-20191128031702-f81c604d8ac2
 	github.com/gin-gonic/gin v1.6.3
 	github.com/golang/protobuf v1.3.3
 	github.com/hyperledger/fabric v1.4.7
@@ -20,5 +21,4 @@ require (
 	google.golang.org/genproto v0.0.0-20191108220845-16a3f7862a1a // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
-	k8s.io/utils v0.0.0-20200520001619-278ece378a50 // indirect
 )

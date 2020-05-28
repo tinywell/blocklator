@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-contrib/cors"
+	ginstatic "github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,8 +13,8 @@ func CollectRouter(mode, static string) *gin.Engine {
 	}
 	r := gin.Default()
 	r.Use(cors.Default())
-
-	r.Static("/front", static)
+	r.Use(ginstatic.Serve("/", ginstatic.LocalFile(static, false)))
+	// r.Static("/front", static)
 	r.POST("/api/block/file", BlockFile)
 	r.POST("/api/block/raw", BlockRaw)
 	r.POST("/api/ledger/file", LedgerFile)
