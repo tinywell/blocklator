@@ -4,7 +4,6 @@
       <!-- <el-main> -->
       <div style="width:900px">
         <blockhead
-          :v-if="blocks"
           v-for="block in blocks"
           :key="block"
           :block="block"
@@ -51,7 +50,7 @@ export default {
         this.curpage = ledger.cur_page;
         this.total = ledger.total;
         this.key = ledger.key;
-        this.localStorage.removeItem("block");
+        localStorage.removeItem("block");
       } else {
         this.$message({
           message: "没有发现区块数据，请重新上传账本",
@@ -80,6 +79,13 @@ export default {
       }
     },
     handleCurrentChange(page) {
+      const loading = this.$loading({
+        lock: true,
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
+
       const action = `${this.$consts.ServerAddrPre}/ledger/blocks`;
       this.$axios
         .get(action, {
@@ -89,6 +95,8 @@ export default {
           }
         })
         .then(rsp => {
+          console.log("sucess");
+          loading.close();
           console.log(rsp);
           if (rsp.data.code === 200) {
             this.blocks = rsp.data.data.blocks;
@@ -101,6 +109,7 @@ export default {
           }
         })
         .catch(err => {
+          loading.close();
           this.$message.error(err.message);
         });
     }
