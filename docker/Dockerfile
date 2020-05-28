@@ -5,8 +5,7 @@ WORKDIR /app
 
 COPY ./front ./
 
-RUN pwd && ls && \
-    npm config set registry https://registry.npm.taobao.org  && \
+RUN npm config set registry https://registry.npm.taobao.org  && \
     npm install
 
 RUN npm run build

@@ -232,7 +232,9 @@ func (bl *Blocklator) ToDesc() (*Desc, error) {
 				continue
 			}
 			desc := translator.ToDesc()
-			desc.Filter = filters[i]
+			if len(filters) > i {
+				desc.Filter = filters[i]
+			}
 			blockdesc.Transactions = append(blockdesc.Transactions, desc)
 		}
 		blockdesc.TransCount = len(trans)

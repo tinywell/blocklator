@@ -12,13 +12,13 @@ func ExtractLeaderBlock(data []byte) (*common.Block, error) {
 	var err error
 	buf := ledgerutil.NewBuffer(data)
 	if block.Header, err = extractHeader(buf); err != nil {
-		return nil, err
+		return nil, errors.WithMessage(err, "extract header error")
 	}
 	if block.Data, err = extractData(buf); err != nil {
-		return nil, err
+		return nil, errors.WithMessage(err, "extract data error")
 	}
 	if block.Metadata, err = extractMetadata(buf); err != nil {
-		return nil, err
+		return nil, errors.WithMessage(err, "extract metadata error")
 	}
 	return block, err
 }
