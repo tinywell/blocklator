@@ -101,6 +101,7 @@ func LedgerFile(c *gin.Context) {
 		return
 	}
 	ledger, err := lfile.Open()
+	defer ledger.Close()
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 500, "msg": err.Error()})
 		return
@@ -144,7 +145,8 @@ func LedgerFile(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"code": 500, "msg": errors.WithMessage(err, "generate block summar keyy error").Error()})
 			return
 		}
-		Cache.Store(key, blockSums)
+
+		Cache.Store(key, int64(len(data)), blockSums)
 		ledgerRsp.Key = key
 		ledgerRsp.CurPage = 1
 		ledgerRsp.Pagination = true
