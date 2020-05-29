@@ -70,8 +70,9 @@ func (c *MapCache) preStore(key string, size int64) {
 		c.cacheLock.Lock()
 		c.create = make(map[string]time.Time)
 		c.cache = &sync.Map{}
+		c.size = make(map[string]int64)
 		c.cacheLock.Unlock()
-		fmt.Println("clear")
+		fmt.Println("clear all")
 	}
 	c.size[key] = size
 }
@@ -113,8 +114,10 @@ func (c *MapCache) scan() {
 func (c *MapCache) clean() {
 	for k, v := range c.create {
 		if time.Now().Sub(v) > Experied {
+			fmt.Println("clean: ", k)
 			c.cache.Delete(k)
 			delete(c.create, k)
+			delete(c.size, k)
 		}
 	}
 }

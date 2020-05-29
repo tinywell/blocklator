@@ -4,9 +4,20 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"strings"
+	"sync"
 
 	"github.com/pkg/errors"
 )
+
+var certPool *sync.Pool
+
+func init() {
+	certPool = &sync.Pool{
+		New: func() interface{} {
+			return &Cert{}
+		},
+	}
+}
 
 // Cert cert
 type Cert struct {
@@ -21,6 +32,8 @@ func NewCert(certRaw []byte) (*Cert, error) {
 	c := &Cert{
 		Pem: string(certRaw),
 	}
+	// c := certPool.Get().(*Cert)
+	// c.Pem = string(certRaw)
 	b, _ := pem.Decode([]byte(certRaw))
 	if b == nil {
 		return nil, errors.New("decode cert pem error")
