@@ -73,6 +73,10 @@ func BlockFile(c *gin.Context) {
 // BlockRaw translate block data in base64 format
 func BlockRaw(c *gin.Context) {
 	data := c.PostForm("block")
+	if len(data) == 0 {
+		c.JSON(http.StatusOK, gin.H{"code": 500, "msg": "需要上传区块数据"})
+		return
+	}
 	blockraw, err := base64.StdEncoding.DecodeString(data)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"code": 500, "msg": err.Error()})
