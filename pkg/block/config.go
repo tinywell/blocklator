@@ -62,15 +62,18 @@ func (c *Configlator) GetValues() *ConfigValues {
 	}
 	values.OrdererAddresses = pod.Addresses
 	cap := &common.Capabilities{}
-	err = proto.Unmarshal(c.config.ChannelGroup.Values[CapabilitiesKey].Value, cap)
-	if err != nil {
-		return nil
+	if capV, ok := c.config.ChannelGroup.Values[CapabilitiesKey]; ok {
+		err = proto.Unmarshal(capV.Value, cap)
+		if err != nil {
+			return nil
+		}
+		caps := []string{}
+		for k := range cap.Capabilities {
+			caps = append(caps, k)
+		}
+		values.Capabilities = caps
 	}
-	caps := []string{}
-	for k := range cap.Capabilities {
-		caps = append(caps, k)
-	}
-	values.Capabilities = caps
+
 	return values
 }
 
