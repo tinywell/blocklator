@@ -54,9 +54,11 @@ func (c *Configlator) GetValues() *ConfigValues {
 		values.Consortium = pct.Name
 	}
 	pod := &common.OrdererAddresses{}
-	err = proto.Unmarshal(c.config.ChannelGroup.Values[OrdererAddressesKey].Value, pod)
-	if err != nil {
-		return nil
+	if oa, ok := c.config.ChannelGroup.Values[OrdererAddressesKey]; ok {
+		err = proto.Unmarshal(oa.Value, pod)
+		if err != nil {
+			return nil
+		}
 	}
 	values.OrdererAddresses = pod.Addresses
 	cap := &common.Capabilities{}

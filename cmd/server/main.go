@@ -2,6 +2,11 @@ package server
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+
+	// pprof for server
+	_ "net/http/pprof"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
@@ -31,6 +36,11 @@ func init() {
 
 // Execute execute server command
 func Execute() {
+
+	go func() {
+		log.Println(http.ListenAndServe("localhost:6060", nil))
+	}()
+
 	var mode = gin.DebugMode
 	if production {
 		mode = gin.ReleaseMode
