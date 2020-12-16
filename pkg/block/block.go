@@ -1,7 +1,7 @@
 package block
 
 import (
-	"encoding/hex"
+	"encoding/base64"
 	"strings"
 
 	"github.com/golang/protobuf/proto"
@@ -45,14 +45,17 @@ func (bl *Blocklator) GetBlockNum() uint64 {
 
 // GetBlockHash return block hash
 func (bl *Blocklator) GetBlockHash() string {
-	hash := bl.block.Header.DataHash
-	return strings.ToUpper(hex.EncodeToString(hash))
+	// hash := bl.block.Header.DataHash
+	hash := HeaderHash(bl.block.Header)
+	// return strings.ToUpper(hex.EncodeToString(hash))
+	return strings.ToUpper(base64.StdEncoding.EncodeToString(hash))
 }
 
 // GetBlockPrehash return block previoous hash
 func (bl *Blocklator) GetBlockPrehash() string {
 	hash := bl.block.Header.PreviousHash
-	return strings.ToUpper(hex.EncodeToString(hash))
+	// return strings.ToUpper(hex.EncodeToString(hash))
+	return strings.ToUpper(base64.StdEncoding.EncodeToString(hash))
 }
 
 // GetChannel return channel id
@@ -124,7 +127,8 @@ func (bl *Blocklator) GetCommitHash() (string, error) {
 		if err != nil {
 			return "", err
 		}
-		return strings.ToUpper(hex.EncodeToString(meta.Value)), nil
+		// return strings.ToUpper(hex.EncodeToString(meta.Value)), nil
+		return strings.ToUpper(base64.StdEncoding.EncodeToString(meta.Value)), nil
 	}
 	return "", errors.New("no commit hash,invalid block metadata")
 }

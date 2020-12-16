@@ -1,6 +1,10 @@
 package block
 
 import (
+	"crypto/sha256"
+	"encoding/asn1"
+	"math/big"
+
 	"github.com/hyperledger/fabric-protos-go/common"
 	ledgerutil "github.com/hyperledger/fabric/common/ledger/util"
 	"github.com/pkg/errors"
@@ -76,4 +80,33 @@ func extractMetadata(buf *ledgerutil.Buffer) (*common.BlockMetadata, error) {
 		metadata.Metadata = append(metadata.Metadata, metadataEntry)
 	}
 	return metadata, nil
+}
+
+type asn1Header struct {
+	Number       *big.Int
+	PreviousHash []byte
+	DataHash     []byte
+}
+
+// HeaderBytes ...
+func HeaderBytes(b *common.BlockHeader) []byte {
+	asn1Header := asn1Header{
+		PreviousHash: b.PreviousHash,
+		DataHash:     b.DataHash,
+		Number:       new(big.Int).SetUint64(b.Number),
+	}
+	result, err := asn1.Marshal(asn1Header)
+	if err != nil {
+		// Errors should only arise for types which cannot be encoded, since the
+		// BlockHeader type is known a-priori to contain only encodable types, an
+		// error here is fatal and should not be propogated
+		panic(err)
+	}
+	return result
+}
+
+// HeaderHash ...
+func HeaderHash(b *common.BlockHeader) []byte {
+	sum := sha256.Sum256(HeaderBytes(b))
+	return sum[:]
 }
