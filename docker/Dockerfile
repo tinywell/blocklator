@@ -5,8 +5,10 @@ WORKDIR /app
 
 COPY ./front ./
 
-RUN npm config set registry https://registry.npm.taobao.org  && \
-    npm install
+# RUN npm config set registry https://registry.npm.taobao.org  && \
+#     npm install
+
+RUN npm install
 
 RUN npm run build
 
@@ -17,9 +19,10 @@ WORKDIR /app
 
 COPY ./ ./
 
-RUN go env -w GOPROXY="https://goproxy.cn,direct" && \
-    go build -v -o blocklator ./cmd/blocklator.go
+# RUN go env -w GOPROXY="https://goproxy.cn,direct" && \
+#     go build -v -o blocklator ./cmd/blocklator.go
 
+RUN go build -v -o blocklator ./cmd/blocklator.go
 
 ## 构建运行镜像
 FROM alpine:latest
