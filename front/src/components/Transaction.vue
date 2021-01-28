@@ -1,14 +1,14 @@
 <template>
-  <el-card style="margin-top:5px;">
+  <el-card style="margin-top: 5px">
     <el-row>
-      <div style="margin-bottom:5px">
+      <div style="margin-bottom: 5px">
         <el-row>
           <el-col :span="4" class="label">提案请求MSPID：</el-col>
           <el-col :span="20" class="text">{{
             transaction.signer.mspid
           }}</el-col>
         </el-row>
-        <el-row>
+        <!-- <el-row>
           <el-col :span="4" class="label">提案请求者证书：</el-col>
           <el-col :span="20" class="text">
             <el-popover placement="right-start" trigger="hover">
@@ -16,12 +16,16 @@
               <i class="el-icon-bank-card" slot="reference"></i>
             </el-popover>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row>
           <el-col :span="4" class="label">提案请求者签名：</el-col>
-          <el-col :span="20" class="text">{{
-            transaction.signer.signature
-          }}</el-col>
+          <el-col :span="20" class="text">
+            <el-popover placement="right-start" trigger="hover">
+              <cert :cert="transaction.signer.cert"></cert>
+              <i class="el-icon-bank-card" slot="reference"></i>
+            </el-popover>
+            {{ transaction.signer.signature }}</el-col
+          >
         </el-row>
       </div>
       <div>
@@ -39,7 +43,12 @@
         </el-row>
         <el-row>
           <el-col :span="4" class="label">交易有效性：</el-col>
-          <el-col :span="20" class="text">{{ transaction.filter }}</el-col>
+          <el-col v-if="transaction.filter" :span="20" class="text"
+            >{{ transaction.filter }}
+          </el-col>
+          <el-col v-else :span="20" class="text"
+            >{{ transaction.filter }} | {{ transaction.validation_code }}
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="4" class="label">链码：</el-col>

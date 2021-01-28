@@ -118,6 +118,19 @@ func (bl *Blocklator) GetMetaDataTransFilter() ([]bool, error) {
 	return nil, errors.New("no metadata for transaction filter")
 }
 
+// GetMetaDataTransValidationCode 获取交易有效性标志
+func (bl *Blocklator) GetMetaDataTransValidationCode() ([]peer.TxValidationCode, error) {
+	txfilters := []peer.TxValidationCode{}
+	if len(bl.block.Metadata.Metadata) > int(common.BlockMetadataIndex_TRANSACTIONS_FILTER) {
+		filter := bl.block.Metadata.Metadata[common.BlockMetadataIndex_TRANSACTIONS_FILTER]
+		for _, f := range filter {
+			txfilters = append(txfilters, peer.TxValidationCode(f))
+		}
+		return txfilters, nil
+	}
+	return nil, errors.New("no metadata for transaction filter")
+}
+
 // GetCommitHash get commit hash of the block
 func (bl *Blocklator) GetCommitHash() (string, error) {
 	if len(bl.block.Metadata.Metadata) > int(common.BlockMetadataIndex_COMMIT_HASH) {
@@ -229,6 +242,10 @@ func (bl *Blocklator) ToDesc() (*Desc, error) {
 		if err != nil {
 			return nil, err
 		}
+		codes, err := bl.GetMetaDataTransValidationCode()
+		if err != nil {
+			return nil, err
+		}
 		trans := bl.GetTransactions()
 		for i, t := range trans {
 			translator, err := NewTranslator(t)
@@ -238,6 +255,9 @@ func (bl *Blocklator) ToDesc() (*Desc, error) {
 			desc := translator.ToDesc()
 			if len(filters) > i {
 				desc.Filter = filters[i]
+			}
+			if len(codes) > i {
+				desc.ValidationCode = peer.TxValidationCode_name[int32(codes[i])]
 			}
 			blockdesc.Transactions = append(blockdesc.Transactions, desc)
 		}
