@@ -90,21 +90,21 @@ type SignInfo struct {
 
 // TranDesc transaction description
 type TranDesc struct {
-	Channel   string    `json:"channel,,omitempty" db:"channel"`
-	TxID      string    `json:"tx_id,,omitempty" db:"tx_id"`
-	Time      time.Time `json:"time,,omitempty" db:"time"`
-	Chaincode string    `json:"chaincode,,omitempty" db:"chaincode"`
-	Func      string    `json:"func,,omitempty" db:"func"`
-	Args      []string  `json:"args,,omitempty" db:"args"`
+	Channel   string    `json:"channel" db:"channel"`
+	TxID      string    `json:"tx_id" db:"tx_id"`
+	Time      time.Time `json:"time" db:"time"`
+	Chaincode string    `json:"chaincode" db:"chaincode"`
+	Func      string    `json:"func" db:"func"`
+	Args      []string  `json:"args" db:"args"`
 	Resp      struct {
-		Status  int32  `json:"status,,omitempty" db:"status"`
-		Message string `json:"message,,omitempty" db:"message"`
-		Data    string `json:"data,,omitempty" db:"data"`
-	} `json:"resp,,omitempty" db:"resp"`
-	Filter         bool        `json:"filter,,omitempty" db:"filter"`
-	ValidationCode string      `json:"validation_code,omitempty" db:"validation_code"`
-	Signer         *SignInfo   `json:"signer,,omitempty" db:"signer"`
-	Endorsers      []*SignInfo `json:"endorsers,,omitempty" db:"endorsers"`
+		Status  int32  `json:"status" db:"status"`
+		Message string `json:"message" db:"message"`
+		Data    string `json:"data" db:"data"`
+	} `json:"resp" db:"resp"`
+	Filter         bool        `json:"filter" db:"filter"`
+	ValidationCode string      `json:"validation_code" db:"validation_code"`
+	Signer         *SignInfo   `json:"signer" db:"signer"`
+	Endorsers      []*SignInfo `json:"endorsers," db:"endorsers"`
 }
 
 // Envelope clean struct for envelope
