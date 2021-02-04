@@ -189,7 +189,7 @@
               >
               <el-col :span="12" class="text">
                 <el-tag
-                  v-for="cap in block.config.applicaiton_values.capabilities"
+                  v-for="cap in block.config.application_values.capabilities"
                   :key="cap"
                   size="small"
                   style="margin: 2px 2px; width: 60px; text-align: center"
@@ -356,7 +356,7 @@ function show(e) {
 
 <style lang="less">
 .box-card {
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .row {
