@@ -32,6 +32,7 @@ func (c *Configlator) ToDesc() *ConfigDesc {
 	desc.OrdererOrgs = c.GetOrdererOrgs()
 	desc.Consensus = c.GetConsensusInfo()
 	desc.Values = c.GetValues()
+	desc.ApplicationValues = c.GetApplicationValues()
 	return desc
 }
 
@@ -118,7 +119,49 @@ func (c *Configlator) GetConsensusInfo() *ConsensusInfo {
 		return nil
 	}
 	info.BatchTimeOut = bt.Timeout
+	cap := &common.Capabilities{}
+	if capV, ok := c.config.ChannelGroup.Groups[OrdererGroupKey].Values[CapabilitiesKey]; ok {
+		err = proto.Unmarshal(capV.Value, cap)
+		if err != nil {
+			return nil
+		}
+		caps := []string{}
+		for k := range cap.Capabilities {
+			caps = append(caps, k)
+		}
+		info.Capabilities = caps
+	}
 	return info
+}
+
+// GetApplicationValues 解析 Application 节中的 Values 信息
+func (c *Configlator) GetApplicationValues() *ApplicationValues {
+	values := &ApplicationValues{}
+	cap := &common.Capabilities{}
+	if capV, ok := c.config.ChannelGroup.Groups[ApplicationGroupKey].Values[CapabilitiesKey]; ok {
+		err := proto.Unmarshal(capV.Value, cap)
+		if err != nil {
+			return nil
+		}
+		caps := []string{}
+		for k := range cap.Capabilities {
+			caps = append(caps, k)
+		}
+		values.Capabilities = caps
+	}
+	acl := &peer.ACLs{}
+	if aclV, ok := c.config.ChannelGroup.Groups[ApplicationGroupKey].Values[ACLsKey]; ok {
+		err := proto.Unmarshal(aclV.Value, acl)
+		if err != nil {
+			return nil
+		}
+		acls := make(map[string]string)
+		for k, v := range acl.Acls {
+			acls[k] = v.PolicyRef
+		}
+		values.ACLs = acls
+	}
+	return values
 }
 
 // GetOrdererOrgs 解析配置块中的 orderer 组织
@@ -212,6 +255,7 @@ func (c *Configlator) getOrg(mspvalue []byte) (*GroupOrg, error) {
 			return nil, errors.Wrap(err, "unmarshal FabricMSPConfig error")
 		}
 		org.Type = mspc.Type
+		org.TypeName = "FABRIC"
 		org.Name = mspcfg.Name
 		if len(mspcfg.Admins) > 0 {
 			org.Admin = string(mspcfg.Admins[0])
@@ -230,6 +274,7 @@ func (c *Configlator) getOrg(mspvalue []byte) (*GroupOrg, error) {
 			return nil, errors.Wrap(err, "unmarshal IdemixMSPConfig error")
 		}
 		org.Type = mspc.Type
+		org.TypeName = "IDEMIX"
 		org.Name = mspcfg.Name
 	default:
 		return nil, errors.Errorf("unexpected msp type:%d", mspc.Type)

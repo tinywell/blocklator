@@ -1,7 +1,7 @@
 <template>
-  <div style="display: flex;justify-content: center;">
+  <div style="display: flex; justify-content: center">
     <!-- <el-main> -->
-    <div style="width:900px">
+    <div style="width: 900px">
       <blockhead :block="block"></blockhead>
       <el-card
         class="box-card"
@@ -87,7 +87,7 @@
       </el-card>
       <el-row class="box-card">
         <el-col :span="12">
-          <el-card class="param-card1" style=";margin-right:5px;height:300px">
+          <el-card class="param-card1" style="margin-right: 5px; height: 400px">
             <div slot="header" class="clearfix">
               <span>共识参数</span>
             </div>
@@ -128,7 +128,7 @@
           </el-card>
         </el-col>
         <el-col :span="12">
-          <el-card style="margin-left:5px;height:300px">
+          <el-card style="margin-left: 5px; height: 400px">
             <div slot="header" class="clearfix">
               <span>网络参数</span>
             </div>
@@ -138,12 +138,12 @@
                 >{{ block.config.values.hashing_algorithm }}
               </el-col>
             </el-row>
-            <el-row class="row">
+            <!-- <el-row class="row">
               <el-col :span="12" class="label">联盟：</el-col>
               <el-col :span="12" class="text"
                 >{{ block.config.values.consortium }}
               </el-col>
-            </el-row>
+            </el-row> -->
             <el-row class="row">
               <el-col :span="12" class="label">共识服务节点地址：</el-col>
               <el-col :span="12" class="text">
@@ -151,20 +151,48 @@
                   v-for="addr in block.config.values.orderer_addresses"
                   :key="addr"
                   size="small"
-                  style="margin:2px 2px;width:200px;text-align:center;"
+                  style="margin: 2px 2px; width: 200px; text-align: center"
                 >
                   {{ addr }}
                 </el-tag>
               </el-col>
             </el-row>
             <el-row class="row">
-              <el-col :span="12" class="label">Capabilities：</el-col>
+              <el-col :span="12" class="label">Channel Capabilities：</el-col>
+              <el-col :span="12" class="text">
+                <el-tag
+                  v-for="cap in block.config.consensus.capabilities"
+                  :key="cap"
+                  size="small"
+                  style="margin: 2px 2px; width: 60px; text-align: center"
+                >
+                  {{ cap }}
+                </el-tag>
+              </el-col>
+            </el-row>
+            <el-row class="row">
+              <el-col :span="12" class="label">Orderer Capabilities：</el-col>
               <el-col :span="12" class="text">
                 <el-tag
                   v-for="cap in block.config.values.capabilities"
                   :key="cap"
                   size="small"
-                  style="margin:2px 2px;width:60px;text-align:center;"
+                  style="margin: 2px 2px; width: 60px; text-align: center"
+                >
+                  {{ cap }}
+                </el-tag>
+              </el-col>
+            </el-row>
+            <el-row class="row">
+              <el-col :span="12" class="label"
+                >Applicaiton Capabilities：</el-col
+              >
+              <el-col :span="12" class="text">
+                <el-tag
+                  v-for="cap in block.config.applicaiton_values.capabilities"
+                  :key="cap"
+                  size="small"
+                  style="margin: 2px 2px; width: 60px; text-align: center"
                 >
                   {{ cap }}
                 </el-tag>

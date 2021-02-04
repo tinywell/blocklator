@@ -17,6 +17,7 @@ const (
 // GroupOrg 配置块中的组织信息
 type GroupOrg struct {
 	Type           int32    `json:"type" db:"type"`
+	TypeName       string   `json:"type_name" db:"type_name"`
 	Name           string   `json:"name" db:"name"`
 	RootCert       string   `json:"root_cert" db:"root_cert"`
 	TLSRootCert    string   `json:"tls_root_cert" db:"tls_root_cert"`
@@ -34,6 +35,7 @@ type ConsensusInfo struct {
 	PreferredMaxBytes uint32                   `json:"preferred_max_bytes,omitempty" db:"preferred_max_bytes"`
 	BatchTimeOut      string                   `json:"batch_time_out,omitempty" db:"batch_time_out"`
 	Borkers           []string                 `json:"borkers,omitempty" db:"borkers"`
+	Capabilities      []string                 `json:"capabilities,omitempty" db:"capabilities"`
 }
 
 // ConfigValues config values
@@ -43,6 +45,12 @@ type ConfigValues struct {
 	OrdererAddresses      []string `json:"orderer_addresses,omitempty" db:"orderer_addresses"`
 	BlockDataHashingWidth int      `json:"block_data_hashing_width,omitempty" db:"block_data_hashing_width"`
 	Capabilities          []string `json:"capabilities,omitempty" db:"capabilities"`
+}
+
+// ApplicationValues values of application
+type ApplicationValues struct {
+	ACLs         map[string]string
+	Capabilities []string `json:"capabilities,omitempty" db:"capabilities"`
 }
 
 //Summary block summary info
@@ -74,11 +82,12 @@ type Desc struct {
 
 // ConfigDesc config description
 type ConfigDesc struct {
-	OrdererOrgs     []*GroupOrg            `json:"orderer_orgs" db:"orderer_orgs"`
-	ConsortiumOrgs  map[string][]*GroupOrg `json:"consortium_orgs" db:"consortium_orgs"`
-	ApplicationOrgs []*GroupOrg            `json:"application_orgs" db:"application_orgs"`
-	Values          *ConfigValues          `json:"values" db:"values"`
-	Consensus       *ConsensusInfo         `json:"consensus" db:"consensus"`
+	OrdererOrgs       []*GroupOrg            `json:"orderer_orgs" db:"orderer_orgs"`
+	ConsortiumOrgs    map[string][]*GroupOrg `json:"consortium_orgs" db:"consortium_orgs"`
+	ApplicationOrgs   []*GroupOrg            `json:"application_orgs" db:"application_orgs"`
+	ApplicationValues *ApplicationValues     `json:"application_values" `
+	Values            *ConfigValues          `json:"values" db:"values"`
+	Consensus         *ConsensusInfo         `json:"consensus" db:"consensus"`
 }
 
 // SignInfo sign info
