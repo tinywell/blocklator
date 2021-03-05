@@ -136,6 +136,9 @@ func (c *Configlator) GetConsensusInfo() *ConsensusInfo {
 
 // GetApplicationValues 解析 Application 节中的 Values 信息
 func (c *Configlator) GetApplicationValues() *ApplicationValues {
+	if _, ok := c.config.ChannelGroup.Groups[ApplicationGroupKey]; !ok {
+		return nil
+	}
 	values := &ApplicationValues{}
 	cap := &common.Capabilities{}
 	if capV, ok := c.config.ChannelGroup.Groups[ApplicationGroupKey].Values[CapabilitiesKey]; ok {
