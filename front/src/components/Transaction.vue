@@ -43,10 +43,7 @@
         </el-row>
         <el-row>
           <el-col :span="4" class="label">交易有效性：</el-col>
-          <el-col v-if="transaction.filter" :span="20" class="text"
-            >{{ transaction.filter }}
-          </el-col>
-          <el-col v-else :span="20" class="text"
+          <el-col :span="20" class="text"
             >{{ transaction.filter }} | {{ transaction.validation_code }}
           </el-col>
         </el-row>
@@ -77,6 +74,45 @@
         <div class="arg_text">回复消息：{{ transaction.resp.message }}</div>
         <div class="arg_text">回复数据：{{ transaction.resp.data }}</div>
       </el-col>
+    </el-row>
+    <el-row>
+      <el-row
+        class="border"
+        v-for="rwset in transaction.tx_rw_set.ns_rw_sets"
+        :key="rwset"
+      >
+        <el-row class="head">读写集 namespace: {{ rwset.name_space }}</el-row>
+        <el-row>
+          <el-col :span="12">
+            <div class="head" style="text-align: center">读集</div>
+            <div
+              class="arg_text"
+              v-for="read in rwset.kv_rw_set.reads"
+              :key="read"
+            >
+              <div class="arg_text"><span>key:</span> {{ read.key }}</div>
+              <div class="arg_text">
+                <span>version: </span> {block:{{
+                  read.version.block_num
+                }}
+                txnum:{{ read.version.tx_num }}
+                }
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="head" style="text-align: center">写集</div>
+            <div
+              class="arg_text"
+              v-for="write in rwset.kv_rw_set.writes"
+              :key="write"
+            >
+              <div class="arg_text"><span>key:</span> {{ write.key }}</div>
+              <div class="arg_text"><span>value: </span>{{ write.value }}</div>
+            </div>
+          </el-col>
+        </el-row>
+      </el-row>
     </el-row>
     <el-row>
       <div class="head">背书签名</div>
@@ -144,6 +180,7 @@ export default {
   text-align: left;
   padding-left: 5px;
   padding-right: 5px;
+  margin-top: 2px;
 }
 
 .endorse {
