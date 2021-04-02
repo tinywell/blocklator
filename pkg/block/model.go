@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/hyperledger/fabric-protos-go/common"
+	"github.com/hyperledger/fabric-protos-go/ledger/rwset/kvrwset"
 	"github.com/hyperledger/fabric-protos-go/orderer/etcdraft"
 	"github.com/hyperledger/fabric-protos-go/peer"
 )
@@ -51,6 +52,25 @@ type ConfigValues struct {
 type ApplicationValues struct {
 	ACLs         map[string]string
 	Capabilities []string `json:"capabilities,omitempty" db:"capabilities"`
+}
+
+// TxRwSet 交易读写集
+type TxRwSet struct {
+	NsRwSets []*NsRwSet `json:"ns_rw_sets,omitempty" db:"ns_rw_sets"`
+}
+
+// NsRwSet encapsulates 'kvrwset.KVRWSet' proto message for a specific name space (chaincode)
+type NsRwSet struct {
+	NameSpace        string             `json:"name_space,omitempty" db:"name_space"`
+	KvRwSet          *kvrwset.KVRWSet   `json:"kv_rw_set,omitempty" db:"kv_rw_set"`
+	CollHashedRwSets []*CollHashedRwSet `json:"coll_hashed_rw_sets,omitempty" db:"coll_hashed_rw_sets"`
+}
+
+// CollHashedRwSet encapsulates 'kvrwset.HashedRWSet' proto message for a specific collection
+type CollHashedRwSet struct {
+	CollectionName string               `json:"collection_name,omitempty" db:"collection_name"`
+	HashedRwSet    *kvrwset.HashedRWSet `json:"hashed_rw_set,omitempty" db:"hashed_rw_set"`
+	PvtRwSetHash   []byte               `json:"pvt_rw_set_hash,omitempty" db:"pvt_rw_set_hash"`
 }
 
 //Summary block summary info
@@ -110,6 +130,7 @@ type TranDesc struct {
 		Message string `json:"message" db:"message"`
 		Data    string `json:"data" db:"data"`
 	} `json:"resp" db:"resp"`
+	TxRwSet        *TxRwSet    `json:"tx_rw_set" `
 	Filter         bool        `json:"filter" db:"filter"`
 	ValidationCode string      `json:"validation_code" db:"validation_code"`
 	Signer         *SignInfo   `json:"signer" db:"signer"`
@@ -132,6 +153,7 @@ type Envelope struct {
 				Response struct {
 					ProposalHash    []byte
 					ChaincodeAction *peer.ChaincodeAction
+					RWSet           *TxRwSet
 				}
 				Endorses []*peer.Endorsement
 			}

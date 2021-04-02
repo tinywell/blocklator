@@ -101,6 +101,12 @@ func (t *Translator) unAction(action *peer.TransactionAction) error {
 		return err
 	}
 	t.innerEnv.Payload.Transaction.ChaincodeAction.Response.ChaincodeAction = cca
+	txrwset := &TxRwSet{}
+	err = txrwset.FromProtoBytes(cca.Results)
+	if err != nil {
+		return err
+	}
+	t.innerEnv.Payload.Transaction.ChaincodeAction.Response.RWSet = txrwset
 	return nil
 }
 
@@ -119,7 +125,7 @@ func (t *Translator) ToDesc() *TranDesc {
 	td.Resp.Status = t.innerEnv.Payload.Transaction.ChaincodeAction.Response.ChaincodeAction.Response.Status
 	td.Resp.Message = t.innerEnv.Payload.Transaction.ChaincodeAction.Response.ChaincodeAction.Response.Message
 	td.Resp.Data = string(t.innerEnv.Payload.Transaction.ChaincodeAction.Response.ChaincodeAction.Response.Payload)
-
+	td.TxRwSet = t.innerEnv.Payload.Transaction.ChaincodeAction.Response.RWSet
 	seri := t.innerEnv.Payload.Header.SignatureHeader.Creator
 	creator := &msp.SerializedIdentity{}
 	err := proto.Unmarshal(seri, creator)
