@@ -91,7 +91,7 @@
               :key="read"
             >
               <div class="arg_text"><span>key:</span> {{ read.key }}</div>
-              <div class="arg_text">
+              <div class="arg_text" v-if="read.version">
                 <span>version: </span> {block:{{
                   read.version.block_num
                 }}
