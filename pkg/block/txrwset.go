@@ -30,6 +30,9 @@ func TxRwSetFromProtoMsg(protoMsg *rwset.TxReadWriteSet) (*TxRwSet, error) {
 		if nsRwSet, err = nsRwSetFromProtoMsg(nsRwSetProtoMsg); err != nil {
 			return nil, err
 		}
+		if nsRwSet.NameSpace == "lscc" {
+			continue
+		}
 		txRwSet.NsRwSets = append(txRwSet.NsRwSets, nsRwSet)
 	}
 	return txRwSet, nil
