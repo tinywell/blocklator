@@ -40,7 +40,7 @@
           </el-collapse-item>
         </el-collapse>
       </el-card>
-      <el-card class="box-card">
+      <el-card class="box-card" v-if="block.config.application_orgs.length > 0">
         <div slot="header" class="clearfix">
           <span>应用组织</span>
         </div>
@@ -205,7 +205,11 @@
               <el-col :span="12" class="label"
                 >Applicaiton Capabilities：</el-col
               >
-              <el-col :span="12" class="text">
+              <el-col
+                :span="12"
+                class="text"
+                v-if="block.config.application_values"
+              >
                 <el-tag
                   v-for="cap in block.config.application_values.capabilities"
                   :key="cap"
