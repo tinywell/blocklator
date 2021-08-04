@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/static v0.0.0-20191128031702-f81c604d8ac2
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.0
 	github.com/golang/protobuf v1.3.3
 	github.com/hyperledger/fabric v1.4.7
 	github.com/hyperledger/fabric-protos-go v0.0.0-20200506201313-25f6564b9ac4
