@@ -1,3 +1,6 @@
+[![GitHub forks](https://img.shields.io/github/forks/tinywell/blocklator)](https://github.com/tinywell/blocklator/network)
+[![GitHub stars](https://img.shields.io/github/stars/tinywell/blocklator)](https://github.com/tinywell/blocklator/stargazers)
+[![GitHub license](https://img.shields.io/github/license/tinywell/blocklator)](https://github.com/tinywell/blocklator)
 # blocklator
 
 这是一个用于解析 hyperledger/fabric 区块链网络产生的区块和账本的 web 小工具。可以解析查看配置区块中的组织结构、共识参数等，也可以解析交易区块中各交易提案和回复的详细数据。还可以直接解析账本文件，提取出其中的所有区块并解析。
