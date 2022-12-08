@@ -1,5 +1,5 @@
 ## node 前端编译
-FROM node:alpine as nodeBuilder
+FROM node:16.14-alpine as nodeBuilder
 
 WORKDIR /app
 
